@@ -211,12 +211,22 @@ local function UpdateLootTable(subCat, subSubCat)
 			if not lootEntries then
 				lootEntries = WORS_Loot_Meme_Data[subCat] and WORS_Loot_Meme_Data[subCat][subSubCat]
 				print("Checking ", subCat, " Data: ", lootEntries) -- Debugging output
-				if not lootEntries then
-					lootEntries = WORS_Loot_Boss_Data[subCat] and WORS_Loot_Boss_Data[subCat][subSubCat]
-					print("Checking ", subCat, " Data: ", lootEntries) 
-				end		
+				-- 	To add new 2 Catogry following template bellow 
+				--if not lootEntries then
+					--lootEntries = WORS_Loot_*ModuleName*_Data[subCat] and WORS_Loot_*ModuleName*_Data[subCat][subSubCat]
+					--print("Checking ", subCat, " Data: ", lootEntries) 
+				--end
 			end
-		end	
+		end		
+    -- If no SubCat provided, check Boss Data / One dropdown
+    elseif subSubCat then
+        lootEntries = WORS_Loot_Boss_Data[subSubCat]
+		print("Checking ", subCat, " Data: ", lootEntries) -- Debugging output
+		-- 	To add new 1 Catogry in " follow template bellow  
+		--if not lootEntries then
+			--lootEntries = WORS_Loot_*ModuleName*_Data[subCat] and WORS_Loot_*ModuleName*_Data[subCat][subSubCat]
+			--print("Checking ", subCat, " Data: ", lootEntries) -- Debugging output
+		--end	
 	end
     -- If lootEntries is found, create loot buttons
     if lootEntries then
@@ -228,41 +238,34 @@ local function UpdateLootTable(subCat, subSubCat)
             end
         end
     else
-        print("No loot entries found for the selected cat/task.")
+        print("No loot entries found for the selected master/task.")
     end
 end
 
 
 -- Update Subcategory for Skills / ModularTemplate
 local function UpdateThirdSubCategory(selectedMod, selectedCat)
-    ClearLootContent()
+	ClearLootContent()
     print("UpdateSubCategory: Updating thirdDropdown for selected subSubCat:", selectedCat)
     UIDropDownMenu_ClearAll(thirdDropdown)
     UIDropDownMenu_SetText(thirdDropdown, selectedMod.subcategoryTwoText)
-
-    -- Get the thirdSubCatList for the selected category
-    local thirdDropdownValues = nil
-    if selectedMod[selectedCat] then
-        thirdDropdownValues = selectedMod[selectedCat].thirdSubCatList
-    end
-
-    print("Retrieved third dropdown values for category:", selectedCat)
-    if thirdDropdownValues then
-        for _, value in ipairs(thirdDropdownValues) do
-            print(" - " .. value)
+    local subTasks = selectedMod[selectedCat]    
+    print("Retrieved subsubcats for category:", selectedCat)
+    if subTasks then
+        for task, _ in pairs(subTasks) do
+            print(" - " .. task)
         end
     else
-        print("No third dropdown values found for category:", selectedCat)
-        return  -- Exit early if no values found
+        print("No subTasks found for category:", selectedCat)
+        return  -- Exit early if no tasks found
     end
-    -- Initialize the dropdown menu
     UIDropDownMenu_Initialize(thirdDropdown, function(self, level)
-        for _, value in ipairs(thirdDropdownValues) do
+        for task, _ in pairs(subTasks) do
             local info = UIDropDownMenu_CreateInfo()
-            info.text = value  -- Set the text for the dropdown option
+            info.text = task
             info.func = function()
-                UIDropDownMenu_SetText(thirdDropdown, value)
-                UpdateLootTable(selectedCat, value)  -- Assuming value is used here
+                UIDropDownMenu_SetText(thirdDropdown, task)
+                UpdateLootTable(selectedCat, task)
             end
             UIDropDownMenu_AddButton(info)
         end
@@ -280,18 +283,39 @@ local function UpdateSubcategoryDropdown(selectedModule)
     UIDropDownMenu_ClearAll(thirdDropdown)
     UIDropDownMenu_SetText(thirdDropdown, "")    
 	ClearLootContent() -- Clear previous loot items	
-    if selectedModule == "Slayer" then
-        UIDropDownMenu_SetText(subcategoryDropdown, WORS_Loot_Slayer_Data.subcategoryOneText)
-        -- Retrieve subTwoCat from the data file
-        local subTwoCat = WORS_Loot_Slayer_Data.subTwoCat or {}
-		print("subTwoCat: ",subTwoCat)
+	-- one SubCatogry
+	-- *****USE AS ONE CAT TEMPLATE UNTESTED*****
+    if selectedModule == "Bosses" then
+        UIDropDownMenu_SetText(subcategoryDropdown, WORS_Loot_Boss_Data.subcategoryOneText)
+        -- Retrieve bosses from the data file
+        local bosses = WORS_Loot_Boss_Data.bosses or {}
+		print("bosses: ",bosses)
         UIDropDownMenu_Initialize(subcategoryDropdown, function(self, level)
-            for _, cat in ipairs(subTwoCat) do
+            for _, boss in ipairs(bosses) do
                 local info = UIDropDownMenu_CreateInfo()
-                info.text = cat
+                info.text = boss
                 info.func = function()
-                    UIDropDownMenu_SetText(subcategoryDropdown, cat)
-                    UpdateThirdSubCategory(WORS_Loot_Slayer_Data,cat)
+                    UIDropDownMenu_SetText(subcategoryDropdown, boss)
+                    UpdateLootTable(nil, boss)
+                end
+                UIDropDownMenu_AddButton(info)
+            end
+        end)
+		thirdDropdown:Hide()	
+	-- two SubCatogry
+	-- *****USE AS TWO CAT TEMPLATE UNTESTED*****
+    elseif selectedModule == "Slayer" then
+        UIDropDownMenu_SetText(subcategoryDropdown, WORS_Loot_Slayer_Data.subcategoryOneText)
+        -- Retrieve masters from the data file
+        local masters = WORS_Loot_Slayer_Data.masters or {}
+		print("masters: ",masters)
+        UIDropDownMenu_Initialize(subcategoryDropdown, function(self, level)
+            for _, master in ipairs(masters) do
+                local info = UIDropDownMenu_CreateInfo()
+                info.text = master
+                info.func = function()
+                    UIDropDownMenu_SetText(subcategoryDropdown, master)
+                    UpdateThirdSubCategory(WORS_Loot_Slayer_Data,master)
                 end
                 UIDropDownMenu_AddButton(info)
             end
@@ -326,24 +350,6 @@ local function UpdateSubcategoryDropdown(selectedModule)
 				info.func = function()
 					UIDropDownMenu_SetText(subcategoryDropdown, cat)
 					UpdateThirdSubCategory(WORS_Loot_Meme_Data,cat)
-				end
-				UIDropDownMenu_AddButton(info)
-			end
-		end)
-		thirdDropdown:Show()  -- Make sure this is shown when Skills is selected
-	-- *****HERE TO ADD NEW two SubCatogry MODULE*****
-	-- two SubCatogry	
-	elseif selectedModule == "Bosses" then
-		UIDropDownMenu_SetText(subcategoryDropdown, WORS_Loot_Boss_Data.subcategoryOneText)
-		local subTwoCat = WORS_Loot_Boss_Data.subTwoCat or {}
-		print("subTwoCat: ", subTwoCat)  -- Check if this is populated correctly
-		UIDropDownMenu_Initialize(subcategoryDropdown, function(self, level)
-			for _, cat in ipairs(subTwoCat) do
-				local info = UIDropDownMenu_CreateInfo()
-				info.text = cat
-				info.func = function()
-					UIDropDownMenu_SetText(subcategoryDropdown, cat)
-					UpdateThirdSubCategory(WORS_Loot_Boss_Data,cat)
 				end
 				UIDropDownMenu_AddButton(info)
 			end

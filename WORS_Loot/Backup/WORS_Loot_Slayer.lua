@@ -3,20 +3,17 @@ WORS_Loot_Slayer_Data = {
 	subcategoryOneText = "Select Master",
 	subcategoryTwo = true,
 	subcategoryTwoText = "Select Task",
-	subTwoCat = {"Turael", "Mazchna", "Vannaka",},  -- Add masters here
+	masters = {"Turael", "Mazchna", "Vannaka",},  -- Add masters here
 		
     Mazchna = {
-		thirdSubCatList = {"Giant Bats", "Murlocs"},
         ["Giant Bats"] = {90039,},
         ["Murlocs"] = {90039,},
     },
     Vannaka = {
-		thirdSubCatList = {"Abyssal Demons", "Black Demons"},
         ["Abyssal Demons"] = {90039,90040},
         ["Black Demons"] = {90039},
     },
 	Turael = {
-		thirdSubCatList = {"Birds: Chicken", "Goblins"},
 		--['Birds: Chicken'] = {"Bones", "Raw chicken", "Feathers", "Clue scroll (beginner)", "Key (medium)"},
 		  ['Birds: Chicken'] = {"90039", "90097", "90069"},
 		--['Goblins'] = {"Bones", "Hammer", "Water rune", "Goblin mail", "Bronze sq shield", "Body rune", "Earth rune", "Bronze bolts", "Chef's hat", "Bronze axe", "Bronze arrows", "Mind rune", "Beer", "Brass necklace", "Air talisman", "Clue scroll (easy)", "Bronze scimitar", "Chaos rune", "Nature rune", "Grapes", "Red cape", "Tin ore", "Grimy guam leaf", "Grimy marrentill", "Grimy tarromin", "Grimy harralander", "Grimy ranarr weed", "Grimy irit leaf", "Grimy avantoe", "Grimy kwuarm", "Grimy cadantine", "Grimy lantadyme", "Grimy dwarf weed", "Goblin champion scroll"},
