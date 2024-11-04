@@ -7,6 +7,8 @@
 	--***local modulesData = {WORS_Loot_Slayer_Data, WORS_Loot_Skill_Data, WORS_Loot_Meme_Data, WORS_Loot_Boss_Data}
 --UIDropDownMenu_Initialize(moduleDropdown, function(self, level)
 	--***local modules = {"Bosses", "Slayer", "Skills", "Memes"}
+
+
 local WORS_Loot = CreateFrame("Frame", "WORS_Loot", UIParent)
 WORS_Loot:SetSize(550, 450)
 WORS_Loot:SetPoint("CENTER")
@@ -68,7 +70,7 @@ print("Third dropdown created.")
 
 -- Loot Table Frame
 local lootTableFrame = CreateFrame("ScrollFrame", "WORS_Loot_LootTable", WORS_Loot, "UIPanelScrollFrameTemplate")
-lootTableFrame:SetSize(440, 350)
+lootTableFrame:SetSize(450, 350)
 lootTableFrame:SetPoint("TOPLEFT", moduleDropdown, "BOTTOMLEFT", 20, -20)
 lootTableFrame:SetBackdrop({
     bgFile = "Interface/Tooltips/UI-Tooltip-Background",
@@ -88,22 +90,75 @@ local buttonSpacing = 5
 -- Create clickable item link with icon using item ID
 local buttonHeight = 40
 local buttonSpacing = 5
-local function CreateLootButton(itemId, index)
+-- Function to create the loot frame
+local function CreateLootFrame()
+    local lootFrame = CreateFrame("Frame", "WORS_Loot", UIParent)
+    lootFrame:SetSize(400, 300)  -- Set the desired size
+    lootFrame:SetPoint("CENTER")  -- Position it in the center of the screen
+
+    -- Set the backdrop for the loot frame
+    lootFrame:SetBackdrop({
+        bgFile = "Interface\\WORS\\OldSchoolBackground2",
+        edgeFile = "Interface\\WORS\\OldSchool-Dialog-Border",
+        tile = false,
+        tileSize = 32,
+        edgeSize = 32,
+        insets = { left = 5, right = 6, top = 6, bottom = 5 }
+    })
+
+    lootFrame:SetBackdropColor(0, 0, 0, 1)  -- Black background
+    lootFrame:SetBackdropBorderColor(1, 1, 1, 1)  -- White border
+
+    lootFrame:Show()  -- Show the loot frame
+    return lootFrame
+end
+
+-- Function to create a loot button
+local function CreateLootButton(itemId, index, isRareDrop)
     print("Creating loot button for item ID:", itemId)
     if not itemId then
         print("Error: Missing item ID.")
         return nil
     end
+
     local lootButton = CreateFrame("Button", nil, lootContent)
-    lootButton:SetSize(220, buttonHeight)
+    lootButton:SetSize(210, buttonHeight)
+
     -- Calculate row and column based on the index
     local column = (index - 1) % 2  -- 0 for first column, 1 for second column
     local row = math.floor((index - 1) / 2)  -- Calculate the row number
     lootButton:SetPoint("TOPLEFT", lootContent, "TOPLEFT", 10 + column * (220 + 10), -(row * (buttonHeight + buttonSpacing)))
+
+    -- Set the button background color based on the rarity
+    if isRareDrop then
+        lootButton:SetBackdrop({
+            bgFile = "Interface\\WORS\\OldSchoolBackground2",  -- Use the same background texture
+            edgeFile = "Interface\\WORS\\OldSchool-Dialog-Border",
+            tile = false,
+            tileSize = 32,
+            edgeSize = 32,
+            insets = { left = 5, right = 6, top = 6, bottom = 5 }
+        })
+        lootButton:SetBackdropColor(1, 0, 0, 1)  -- Red background for rare drops
+    else
+        lootButton:SetBackdrop({
+            bgFile = "Interface\\WORS\\OldSchoolBackground2",
+            edgeFile = "Interface\\WORS\\OldSchool-Dialog-Border",
+            tile = false,
+            tileSize = 32,
+            edgeSize = 32,
+            insets = { left = 5, right = 6, top = 6, bottom = 5 }
+        })
+        lootButton:SetBackdropColor(0, 0, 0, 1)  -- Black background for normal drops
+    end
+
+    -- Create item icon
     local itemIcon = lootButton:CreateTexture(nil, "ARTWORK")
     itemIcon:SetSize(40, 40)
     itemIcon:SetPoint("LEFT", lootButton, "LEFT", 5, 0)
     itemIcon:SetTexture(GetItemIcon(itemId) or "Interface/Icons/INV_Misc_QuestionMark")
+
+    -- Tooltip on hover
     lootButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         local itemLink = GetItemLink(itemId)
@@ -114,31 +169,32 @@ local function CreateLootButton(itemId, index)
             print("Error: Item link not found for item ID " .. itemId)
         end
     end)
+
     lootButton:SetScript("OnLeave", function()
         GameTooltip:Hide()
     end)
+
+    -- Item name display
     local itemName = lootButton:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     itemName:SetPoint("LEFT", itemIcon, "RIGHT", 5, 0)
     itemName:SetFont("Fonts\\runescape.ttf", 20)  -- Set custom font and size
-	itemName:SetTextColor(0, 0, 1)
+    itemName:SetTextColor(0, 0, 1)
+
     -- Attempt to fetch the item name using the cached method
     local itemInfo = {GetItemInfo(itemId)}
     if itemInfo[1] then
         itemName:SetTextColor(1, 1, 0)
-		itemName:SetText(itemInfo[1])  -- Use the name if found
+        itemName:SetText(itemInfo[1])  -- Use the name if found
     else
-        -- Fallback method: Use item ID to create a hyperlink format
-        local itemLink = format("|cffff8000|Hitem:%d:0:0:0:0:0:0:0|h[%d]|h|r", itemId, itemId)        
+        local itemLink = format("|cffff8000|Hitem:%d:0:0:0:0:0:0:0|h[%d]|h|r", itemId, itemId)
         itemName:SetText(itemLink)  -- Display the raw hyperlink format
         itemName:SetTextColor(1, 1, 0)  -- Yellow color for unknown items
-        -- Using GetTime for a simple timeout mechanism
+
         local loadingStartTime = GetTime()
         lootButton:SetScript("OnUpdate", function(self)
             if (GetTime() - loadingStartTime) > 999 then
-                --itemName:SetText("Unknown Item")  -- Change to a default state after timeout
                 lootButton:SetScript("OnUpdate", nil)  -- Stop the update script
             else
-                -- Try to fetch the item info again to see if it has been cached now
                 itemInfo = {GetItemInfo(itemId)}
                 if itemInfo[1] then
                     itemName:SetText(itemInfo[1])  -- Update the name if it has now been found
@@ -148,8 +204,10 @@ local function CreateLootButton(itemId, index)
             end
         end)
     end
+
     lootButton:SetHighlightTexture("Interface/Buttons/UI-Common-MouseHilight", "ADD")
     lootButton:SetPushedTextOffset(0, -1)
+
     lootButton:SetScript("OnClick", function(self, button)
         local itemLink = GetItemLink(itemId)
         if itemLink then
@@ -164,32 +222,49 @@ local function CreateLootButton(itemId, index)
                 ItemRefTooltip:Show()
             end
         else
-            -- Also try to generate the link from the itemId if the itemLink isn't found
-            local fallbackItemLink = format("|cffff8000|Hitem:%d:0:0:0:0:0:0:0|h[%d]|h|r", itemId, itemId)        
-            -- Show the fallback item tooltip directly
+            local fallbackItemLink = format("|cffff8000|Hitem:%d:0:0:0:0:0:0:0|h[%d]|h|r", itemId, itemId)
             ItemRefTooltip:SetOwner(self, "ANCHOR_RIGHT")
             ItemRefTooltip:SetHyperlink(fallbackItemLink)
             ItemRefTooltip:Show()
         end
     end)
+
     lootButton:Show()
     return lootButton
 end
 
+
+
+-- Clear Loot Content
 -- Clear Loot Content
 local function ClearLootContent()
     print("Clearing loot content...")
-    for _, item in ipairs(lootItems) do
-        -- Cancel the loading timeout if it exists
-        if item.loadingTimeout then
-            item.loadingTimeout:Cancel()
-            item.loadingTimeout = nil  -- Clean up the reference
-        end
-        item:Hide()
-        item:ClearAllPoints()
+
+    -- Check if lootItems is nil or empty
+    if not lootItems or #lootItems == 0 then
+        print("No loot items to clear.")
+        return
+    else
+        print("Loot items before clearing: ", #lootItems)
     end
-    wipe(lootItems)
+
+    for _, button in ipairs(lootItems) do
+        if button and button.Hide then
+            button:Hide()  -- Hide the button
+            button:ClearAllPoints()  -- Clear positioning
+            print("Hiding item button with ID:", button.itemID) -- Log the action
+        elseif not button then
+            print("Button is nil")
+        else
+            print("Button does not have a Hide method")
+        end
+    end
+
+    wipe(lootItems)  -- Clear the lootItems table
+    print("Loot content cleared. Total items now:", #lootItems)
 end
+
+
 
 -- Update Loot Table based on selection
 -- ********************************
@@ -198,36 +273,51 @@ end
 local function UpdateLootTable(subCat, subSubCat)
     print("Updating loot table for SubCat:", subCat, "SubSubCat:", subSubCat)
     ClearLootContent()
-    
-    -- **ADD NEW MODULE HERE** List of module data tables to loop through
-    local modulesData = {WORS_Loot_RDT_Data, WORS_Loot_Weapons_Data, WORS_Loot_Armour_Data, WORS_Loot_Slayer_Data, WORS_Loot_Skill_Data, WORS_Loot_Meme_Data, WORS_Loot_Boss_Data}
 
-    local lootEntries
+    local lootEntries = {}
 
-    -- Loop through each module data to find loot entries
+    -- Create a mapping of all loot datasets
+    local lootDataSources = {WORS_Loot_Boss_Data, WORS_Loot_RDT_Data, WORS_Loot_Weapons_Data, WORS_Loot_Armour_Data, WORS_Loot_Slayer_Data, WORS_Loot_Skill_Data, WORS_Loot_Meme_Data}
+
     if subCat and subSubCat then
-        for _, dataModule in ipairs(modulesData) do
-            lootEntries = dataModule[subCat] and dataModule[subCat][subSubCat]
-            print("Checking ", subCat, " Data in module:", dataModule, "Loot Entries:", lootEntries) -- Debugging output
-            if lootEntries then
-                break
+        local foundData = false
+        for _, dataSource in ipairs(lootDataSources) do
+            if dataSource[subCat] then
+                local categoryData = dataSource[subCat][subSubCat]
+                if categoryData then
+                    foundData = true
+                    for _, itemID in ipairs(categoryData.normalDrops) do
+                        table.insert(lootEntries, { itemID = itemID, rareDrop = false })
+                    end
+                    for _, itemID in ipairs(categoryData.rareDropTable) do
+                        table.insert(lootEntries, { itemID = itemID, rareDrop = true })
+                    end
+                end
             end
         end
-    end
 
-    -- If lootEntries is found, create loot buttons
-    if lootEntries then
-        for i, itemId in ipairs(lootEntries) do
-            local lootButton = CreateLootButton(itemId, i)
-            if lootButton then
-                lootButton:SetParent(lootContent)
-                table.insert(lootItems, lootButton)
-            end
+        if not foundData then
+            print("Error: No data found for subCat:", subCat, "subSubCat:", subSubCat)
         end
     else
-        print("No loot entries found for the selected category/task.")
+        print("Error: Missing subCat or subSubCat.")
+        return
+    end
+
+    if #lootEntries > 0 then
+        for index, lootItem in ipairs(lootEntries) do
+            print("Loot entry:", lootItem.itemID, "Rare:", lootItem.rareDrop)
+            local lootButton = CreateLootButton(lootItem.itemID, index, lootItem.rareDrop)  -- Create the button
+            table.insert(lootItems, lootButton)  -- Store the button reference instead of the lootItem
+        end
+    else
+        print("No loot entries available for the selected category.")
     end
 end
+
+
+
+
 
 
 -- Update Subcategory for Skills / ModularTemplate
