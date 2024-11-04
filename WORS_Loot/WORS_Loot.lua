@@ -1,13 +1,12 @@
 -- Create the main frame
 -- TO add new module ensure Data file is in this format "WORS_Loot_*ModuleName*_Data"
--- Changes will need to be made in two functions to add new modules
-	--2 Dropdown
-	--2 Changes follow template in UpdateLootTable(subCat, subSubCat)
-	--3 Changes follow template in UpdateSubcategoryDropdown(selectedModule)
-	--1 Dropdown
-	--1 Change  follow template in UpdateLootTable(subCat, subSubCat)
-	--2 Changes follow template in UpdateSubcategoryDropdown(selectedModule)
-
+-- See Functions bellow to add new modules
+--local function UpdateLootTable(subCat, subSubCat)
+    --***local modulesData = {WORS_Loot_Slayer_Data, WORS_Loot_Skill_Data, WORS_Loot_Meme_Data, WORS_Loot_Boss_Data}
+--local function UpdateSubcategoryDropdown(selectedModule)
+	--***local modulesData = {WORS_Loot_Slayer_Data, WORS_Loot_Skill_Data, WORS_Loot_Meme_Data, WORS_Loot_Boss_Data}
+--UIDropDownMenu_Initialize(moduleDropdown, function(self, level)
+	--***local modules = {"Bosses", "Slayer", "Skills", "Memes"}
 local WORS_Loot = CreateFrame("Frame", "WORS_Loot", UIParent)
 WORS_Loot:SetSize(550, 450)
 WORS_Loot:SetPoint("CENTER")
@@ -197,27 +196,25 @@ end
 -- *****HERE TO ADD NEW MODULE*****
 -- ********************************
 local function UpdateLootTable(subCat, subSubCat)
-	print("Updating loot table for SubCat:", subCat, "SubSubCat:", subSubCat)
+    print("Updating loot table for SubCat:", subCat, "SubSubCat:", subSubCat)
     ClearLootContent()
+    
+    -- **ADD NEW MODULE HERE** List of module data tables to loop through
+    local modulesData = {WORS_Loot_Slayer_Data, WORS_Loot_Skill_Data, WORS_Loot_Meme_Data, WORS_Loot_Boss_Data}
+
     local lootEntries
-    -- Check for loot entries in with 2 dropdowns Data
+
+    -- Loop through each module data to find loot entries
     if subCat and subSubCat then
-        lootEntries = WORS_Loot_Slayer_Data[subCat] and WORS_Loot_Slayer_Data[subCat][subSubCat]
-        print("Checking ", subCat, " Data: ", lootEntries) -- Debugging output
-        -- If not found in Slayer Data, check Skill Data
-        if not lootEntries then
-            lootEntries = WORS_Loot_Skill_Data[subCat] and WORS_Loot_Skill_Data[subCat][subSubCat]
-            print("Checking ", subCat, " Data: ", lootEntries) -- Debugging output
-			if not lootEntries then
-				lootEntries = WORS_Loot_Meme_Data[subCat] and WORS_Loot_Meme_Data[subCat][subSubCat]
-				print("Checking ", subCat, " Data: ", lootEntries) -- Debugging output
-				if not lootEntries then
-					lootEntries = WORS_Loot_Boss_Data[subCat] and WORS_Loot_Boss_Data[subCat][subSubCat]
-					print("Checking ", subCat, " Data: ", lootEntries) 
-				end		
-			end
-		end	
-	end
+        for _, dataModule in ipairs(modulesData) do
+            lootEntries = dataModule[subCat] and dataModule[subCat][subSubCat]
+            print("Checking ", subCat, " Data in module:", dataModule, "Loot Entries:", lootEntries) -- Debugging output
+            if lootEntries then
+                break
+            end
+        end
+    end
+
     -- If lootEntries is found, create loot buttons
     if lootEntries then
         for i, itemId in ipairs(lootEntries) do
@@ -228,7 +225,7 @@ local function UpdateLootTable(subCat, subSubCat)
             end
         end
     else
-        print("No loot entries found for the selected cat/task.")
+        print("No loot entries found for the selected category/task.")
     end
 end
 
@@ -276,83 +273,39 @@ end
 -- ********************************
 local function UpdateSubcategoryDropdown(selectedModule)
     print("Updating subcategory dropdown for module:", selectedModule)
+    -- Clear dropdowns and loot content
     UIDropDownMenu_ClearAll(subcategoryDropdown)
     UIDropDownMenu_ClearAll(thirdDropdown)
     UIDropDownMenu_SetText(thirdDropdown, "")    
-	ClearLootContent() -- Clear previous loot items	
-    if selectedModule == "Slayer" then
-        UIDropDownMenu_SetText(subcategoryDropdown, WORS_Loot_Slayer_Data.subcategoryOneText)
-        -- Retrieve subTwoCat from the data file
-        local subTwoCat = WORS_Loot_Slayer_Data.subTwoCat or {}
-		print("subTwoCat: ",subTwoCat)
+    ClearLootContent() 
+    -- Add new modules here if needed
+    local modules = {Slayer = WORS_Loot_Slayer_Data, Skills = WORS_Loot_Skill_Data, Memes = WORS_Loot_Meme_Data, Bosses = WORS_Loot_Boss_Data,}
+
+    local moduleData = modules[selectedModule]
+    if moduleData then
+        -- Set the first level dropdown text from the module data
+        UIDropDownMenu_SetText(subcategoryDropdown, moduleData.subcategoryOneText)
+        -- Retrieve subTwoCat from the module data file
+        local subTwoCat = moduleData.subTwoCat or {}
+        print("subTwoCat: ", subTwoCat)  -- Check if this is populated correctly        
+        -- Initialize the subcategory dropdown
         UIDropDownMenu_Initialize(subcategoryDropdown, function(self, level)
             for _, cat in ipairs(subTwoCat) do
                 local info = UIDropDownMenu_CreateInfo()
                 info.text = cat
                 info.func = function()
                     UIDropDownMenu_SetText(subcategoryDropdown, cat)
-                    UpdateThirdSubCategory(WORS_Loot_Slayer_Data,cat)
+                    UpdateThirdSubCategory(moduleData, cat)
                 end
                 UIDropDownMenu_AddButton(info)
             end
         end)
-		thirdDropdown:Show()  	
-	-- two SubCatogry
-	elseif selectedModule == "Skills" then
-		UIDropDownMenu_SetText(subcategoryDropdown, WORS_Loot_Skill_Data.subcategoryOneText)
-		local subTwoCat = WORS_Loot_Skill_Data.subTwoCat or {}
-		print("subTwoCat: ", subTwoCat)  -- Check if this is populated correctly
-		UIDropDownMenu_Initialize(subcategoryDropdown, function(self, level)
-			for _, cat in ipairs(subTwoCat) do
-				local info = UIDropDownMenu_CreateInfo()
-				info.text = cat
-				info.func = function()
-					UIDropDownMenu_SetText(subcategoryDropdown, cat)
-					UpdateThirdSubCategory(WORS_Loot_Skill_Data,cat)
-				end
-				UIDropDownMenu_AddButton(info)
-			end
-		end)
-		thirdDropdown:Show()  -- Make sure this is shown when Skills is selected	
-	-- two SubCatogry	
-	elseif selectedModule == "Memes" then
-		UIDropDownMenu_SetText(subcategoryDropdown, WORS_Loot_Meme_Data.subcategoryOneText)
-		local subTwoCat = WORS_Loot_Meme_Data.subTwoCat or {}
-		print("subTwoCat: ", subTwoCat)  -- Check if this is populated correctly
-		UIDropDownMenu_Initialize(subcategoryDropdown, function(self, level)
-			for _, cat in ipairs(subTwoCat) do
-				local info = UIDropDownMenu_CreateInfo()
-				info.text = cat
-				info.func = function()
-					UIDropDownMenu_SetText(subcategoryDropdown, cat)
-					UpdateThirdSubCategory(WORS_Loot_Meme_Data,cat)
-				end
-				UIDropDownMenu_AddButton(info)
-			end
-		end)
-		thirdDropdown:Show()  -- Make sure this is shown when Skills is selected
-	-- *****HERE TO ADD NEW two SubCatogry MODULE*****
-	-- two SubCatogry	
-	elseif selectedModule == "Bosses" then
-		UIDropDownMenu_SetText(subcategoryDropdown, WORS_Loot_Boss_Data.subcategoryOneText)
-		local subTwoCat = WORS_Loot_Boss_Data.subTwoCat or {}
-		print("subTwoCat: ", subTwoCat)  -- Check if this is populated correctly
-		UIDropDownMenu_Initialize(subcategoryDropdown, function(self, level)
-			for _, cat in ipairs(subTwoCat) do
-				local info = UIDropDownMenu_CreateInfo()
-				info.text = cat
-				info.func = function()
-					UIDropDownMenu_SetText(subcategoryDropdown, cat)
-					UpdateThirdSubCategory(WORS_Loot_Boss_Data,cat)
-				end
-				UIDropDownMenu_AddButton(info)
-			end
-		end)
-		thirdDropdown:Show()  -- Make sure this is shown when Skills is selected
-	-- *****HERE TO ADD NEW two SubCatogry MODULE*****
-	end
+        thirdDropdown:Show()
+    else
+        print("Selected module not found in modules table:", selectedModule)
+    end
 end
-	
+
 
 -- Module Dropdown Logic
 -- ********************************
@@ -397,11 +350,6 @@ local miniButton = LibStub("LibDataBroker-1.1"):NewDataObject("WORS_Loot", {
                 WORS_Loot:Show()
             end
         elseif btn == "RightButton" then
-            --if settingsFrame and settingsFrame:IsShown() then
-            --    settingsFrame:Hide()
-            --elseif settingsFrame then
-            --    settingsFrame:Show()
-            --end
 			if WORS_Loot:IsShown() then
                 WORS_Loot:Hide()
             else
