@@ -13,8 +13,11 @@ libs/LibDBIcon-1.0/embeds.xml
 
 # Main and Data Files
 WORS_Loot.lua
-WORS_Loot_Slayer.lua
+WORS_Loot_Armour.lua
 WORS_Loot_Bosses.lua
-WORS_Loot_Skills.lua
 WORS_Loot_Memes.lua
-
+WORS_Loot_RDT.lua
+WORS_Loot_Skills.lua
+WORS_Loot_Slayer.lua
+WORS_Loot_Slayer.lua
+WORS_Loot_Weapons.lua

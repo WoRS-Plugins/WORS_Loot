@@ -200,7 +200,7 @@ local function UpdateLootTable(subCat, subSubCat)
     ClearLootContent()
     
     -- **ADD NEW MODULE HERE** List of module data tables to loop through
-    local modulesData = {WORS_Loot_Slayer_Data, WORS_Loot_Skill_Data, WORS_Loot_Meme_Data, WORS_Loot_Boss_Data}
+    local modulesData = {WORS_Loot_RDT_Data, WORS_Loot_Weapons_Data, WORS_Loot_Armour_Data, WORS_Loot_Slayer_Data, WORS_Loot_Skill_Data, WORS_Loot_Meme_Data, WORS_Loot_Boss_Data}
 
     local lootEntries
 
@@ -279,7 +279,7 @@ local function UpdateSubcategoryDropdown(selectedModule)
     UIDropDownMenu_SetText(thirdDropdown, "")    
     ClearLootContent() 
     -- Add new modules here if needed
-    local modules = {Slayer = WORS_Loot_Slayer_Data, Skills = WORS_Loot_Skill_Data, Memes = WORS_Loot_Meme_Data, Bosses = WORS_Loot_Boss_Data,}
+    local modules = {RareDropTable = WORS_Loot_RDT_Data, Weapons = WORS_Loot_Weapons_Data, Armour = WORS_Loot_Armour_Data, Slayer = WORS_Loot_Slayer_Data, Skills = WORS_Loot_Skill_Data, Memes = WORS_Loot_Meme_Data, Bosses = WORS_Loot_Boss_Data,}
 
     local moduleData = modules[selectedModule]
     if moduleData then
@@ -313,7 +313,7 @@ end
 -- ********************************
 UIDropDownMenu_Initialize(moduleDropdown, function(self, level)
 	-- Add Module name bellow to add to first dropdown menu
-    local modules = {"Bosses", "Slayer", "Skills", "Memes"}
+    local modules = {"Armour", "Weapons", "Bosses", "RareDropTable", "Slayer", "Skills", "Memes"}
     for _, module in ipairs(modules) do
         local info = UIDropDownMenu_CreateInfo()
         info.text = module
