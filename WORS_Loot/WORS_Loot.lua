@@ -90,6 +90,18 @@ local buttonSpacing = 5
 -- Create clickable item link with icon using item ID
 local buttonHeight = 40
 local buttonSpacing = 5
+-- Create a font string for displaying information
+local infoText = lootTableFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+infoText:SetPoint("TOP", lootTableFrame, "TOP", 0, -60)  -- Adjust position as necessary
+infoText:SetText("")  -- Initial text
+infoText:SetTextColor(1, 1, 1)  -- White text color
+infoText:SetJustifyH("CENTER")  -- Center the text horizontally
+local subInfoText = lootTableFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+subInfoText:SetPoint("TOP", lootTableFrame, "TOP", 0, -60)  -- Adjust position as necessary
+subInfoText:SetText("")  -- Initial text
+subInfoText:SetTextColor(1, 1, 1)  -- White text color
+subInfoText:SetJustifyH("CENTER")  -- Center the text horizontally
+
 -- Function to create the loot frame
 local function CreateLootFrame()
     local lootFrame = CreateFrame("Frame", "WORS_Loot", UIParent)
@@ -112,6 +124,7 @@ local function CreateLootFrame()
     lootFrame:Show()  -- Show the loot frame
     return lootFrame
 end
+
 
 -- Function to create a loot button
 local function CreateLootButton(itemId, index, isRareDrop)
@@ -139,7 +152,8 @@ local function CreateLootButton(itemId, index, isRareDrop)
             edgeSize = 32,
             insets = { left = 5, right = 6, top = 6, bottom = 5 }
         })
-        lootButton:SetBackdropColor(1, 0, 0, 1)  -- Red background for rare drops
+        lootButton:SetBackdropColor(0.75, 0.25, 0.75, 1)  -- Lighter purple background for rare drops
+
     else
         lootButton:SetBackdrop({
             bgFile = "Interface\\WORS\\OldSchoolBackground2",
@@ -233,7 +247,30 @@ local function CreateLootButton(itemId, index, isRareDrop)
     return lootButton
 end
 
+local function DisplayDefaultInfo()
+    -- Create a text frame to display information about the add-on
+    --local infoText = LootFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    infoText:SetText("Welcome to the WORS Loot!\n\nSelect a category to view item tables for Bosses, \nSlayer Tasks, Crafting and More.\n\n Items with Black background are from the regular drop table\nItems with a Purple background are from random drop table\n\nDrop tables have been mostly scraped from OSRS wiki \nmistakes likly here")
+	--subInfoText:SetText("")
+    -- Example button for normal drops
+    local normalDropButton = CreateLootButton(90066, 1, false)  -- Replace 12345 with an example item ID
+    normalDropButton:SetPoint("TOP", infoText, "BOTTOM", 0, -20)
 
+
+    -- Example button for rare drops
+    local rareDropButton = CreateLootButton(91119	, 2, true)  -- Replace 67890 with an example rare item ID
+    rareDropButton:SetPoint("TOP", normalDropButton, "BOTTOM", 0, -10)
+
+    --Ensure all elements are visible
+    normalDropButton:Show()
+    rareDropButton:Show()
+
+    --Store these in lootItems for cleanup
+    table.insert(lootItems, normalDropButton)
+    table.insert(lootItems, rareDropButton)
+    table.insert(lootItems, infoText)
+end
+DisplayDefaultInfo()
 
 -- Clear Loot Content
 -- Clear Loot Content
@@ -243,6 +280,8 @@ local function ClearLootContent()
     -- Check if lootItems is nil or empty
     if not lootItems or #lootItems == 0 then
         print("No loot items to clear.")
+        subInfoText:SetText("")  -- Clear any existing text
+        subInfoText:Show()  -- Show the info text if needed
         return
     else
         print("Loot items before clearing: ", #lootItems)
@@ -260,9 +299,12 @@ local function ClearLootContent()
         end
     end
 
+    subInfoText:SetText("")  -- Clear the error message or info text
+    subInfoText:Hide()  -- Optionally hide the text if there's no message to show
     wipe(lootItems)  -- Clear the lootItems table
     print("Loot content cleared. Total items now:", #lootItems)
 end
+
 
 
 
@@ -273,12 +315,16 @@ end
 local function UpdateLootTable(subCat, subSubCat)
     print("Updating loot table for SubCat:", subCat, "SubSubCat:", subSubCat)
     ClearLootContent()
-
+    -- Check if no valid selection was made
+    if not subCat or not subSubCat then
+        -- Display default message and example buttons
+        --DisplayDefaultInfo()
+        return
+    end
     local lootEntries = {}
 
     -- Create a mapping of all loot datasets
     local lootDataSources = {WORS_Loot_Boss_Data, WORS_Loot_RDT_Data, WORS_Loot_Weapons_Data, WORS_Loot_Armour_Data, WORS_Loot_Slayer_Data, WORS_Loot_Skill_Data, WORS_Loot_Meme_Data}
-
     if subCat and subSubCat then
         local foundData = false
         for _, dataSource in ipairs(lootDataSources) do
@@ -295,7 +341,6 @@ local function UpdateLootTable(subCat, subSubCat)
                 end
             end
         end
-
         if not foundData then
             print("Error: No data found for subCat:", subCat, "subSubCat:", subSubCat)
         end
@@ -312,6 +357,7 @@ local function UpdateLootTable(subCat, subSubCat)
         end
     else
         print("No loot entries available for the selected category.")
+		subInfoText:SetText("No loot in this catogry maybe bug or maybe itemID is\n unknown check OSRS Wiki before reporting")
     end
 end
 
@@ -322,7 +368,7 @@ end
 
 -- Update Subcategory for Skills / ModularTemplate
 local function UpdateThirdSubCategory(selectedMod, selectedCat)
-    ClearLootContent()
+	ClearLootContent()
     print("UpdateSubCategory: Updating thirdDropdown for selected subSubCat:", selectedCat)
     UIDropDownMenu_ClearAll(thirdDropdown)
     UIDropDownMenu_SetText(thirdDropdown, selectedMod.subcategoryTwoText)
