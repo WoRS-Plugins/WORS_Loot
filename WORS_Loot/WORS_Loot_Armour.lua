@@ -6,43 +6,36 @@ WORS_Loot_Armour_Data = {
 	subTwoCat = {"BIS", "Melee", "Range", "Magic"},  -- Add 3rd dropdown list here  here	
 
 	BIS = {
-		thirdSubCatList = {"P1 Melee", "P1 Range", "P1 Magic", "P2 Melee", "P2 Range", "P2 Magic", "P3 Melee", "P3 Range", "P3 Magic", "P4 Melee", "P4 Range", "P4 Magic"},
-		  ['P1 Melee'] = {"55959", "55960", "55935", "55936", "55977", "55978", "55989", "55990", "55968", "55969", "55941", "55942", "55998", "55999", "55992", "55993", "55986", "55987", "55971", "55972", "55962", "55963", "55956", "55957", "56096", "56097", "55950", "55951", "55980", "55981", "55947", "55948", "55944", "55945", "55953", "55954", "55974", "55975", "55938", "55939"},
-		  ['P1 Range'] = {"55959", "55960", "55935", "55936", "55977", "55978", "55989", "55990", "55968", "55969", "55941", "55942", "55998", "55999", "55992", "55993", "55986", "55987", "55971", "55972", "55962", "55963", "55956", "55957", "56096", "56097", "55950", "55951", "55980", "55981", "55947", "55948", "55944", "55945", "55953", "55954", "55974", "55975", "55938", "55939"},
-		  ['P1 Magic'] = {"53618", "58184", "59037", "56001", "58018"},	
-		  ['P2 Melee'] = {"55959", "55960", "55935", "55936", "55977", "55978", "55989", "55990", "55968", "55969", "55941", "55942", "55998", "55999", "55992", "55993", "55986", "55987", "55971", "55972", "55962", "55963", "55956", "55957", "56096", "56097", "55950", "55951", "55980", "55981", "55947", "55948", "55944", "55945", "55953", "55954", "55974", "55975", "55938", "55939"},
-		  ['P2 Range'] = {"55959", "55960", "55935", "55936", "55977", "55978", "55989", "55990", "55968", "55969", "55941", "55942", "55998", "55999", "55992", "55993", "55986", "55987", "55971", "55972", "55962", "55963", "55956", "55957", "56096", "56097", "55950", "55951", "55980", "55981", "55947", "55948", "55944", "55945", "55953", "55954", "55974", "55975", "55938", "55939"},
-		  ['P2 Magic'] = {"53618", "58184", "59037", "56001", "58018"},	
-		  ['P3 Melee'] = {"55959", "55960", "55935", "55936", "55977", "55978", "55989", "55990", "55968", "55969", "55941", "55942", "55998", "55999", "55992", "55993", "55986", "55987", "55971", "55972", "55962", "55963", "55956", "55957", "56096", "56097", "55950", "55951", "55980", "55981", "55947", "55948", "55944", "55945", "55953", "55954", "55974", "55975", "55938", "55939"},
-		  ['P3 Range'] = {"55959", "55960", "55935", "55936", "55977", "55978", "55989", "55990", "55968", "55969", "55941", "55942", "55998", "55999", "55992", "55993", "55986", "55987", "55971", "55972", "55962", "55963", "55956", "55957", "56096", "56097", "55950", "55951", "55980", "55981", "55947", "55948", "55944", "55945", "55953", "55954", "55974", "55975", "55938", "55939"},
-		  ['P3 Magic'] = {"53618", "58184", "59037", "56001", "58018"},	
-		  ['P4 Melee'] = {"55959", "55960", "55935", "55936", "55977", "55978", "55989", "55990", "55968", "55969", "55941", "55942", "55998", "55999", "55992", "55993", "55986", "55987", "55971", "55972", "55962", "55963", "55956", "55957", "56096", "56097", "55950", "55951", "55980", "55981", "55947", "55948", "55944", "55945", "55953", "55954", "55974", "55975", "55938", "55939"},
-		  ['P4 Range'] = {"55959", "55960", "55935", "55936", "55977", "55978", "55989", "55990", "55968", "55969", "55941", "55942", "55998", "55999", "55992", "55993", "55986", "55987", "55971", "55972", "55962", "55963", "55956", "55957", "56096", "56097", "55950", "55951", "55980", "55981", "55947", "55948", "55944", "55945", "55953", "55954", "55974", "55975", "55938", "55939"},
-		  ['P4 Magic'] = {"53618", "58184", "59037", "56001", "58018"},	
-		  
+		thirdSubCatList = {"Trees", "Axes"},
+		['Trees'] = {
+		--normalDrops = {"Logs", "Oak Logs", "Willow Logs", "Teak Logs", "Maple Logs", "Mahogany Logs", "Yew Logs", "Magic Logs", "Redwood Logs"}, rareDropTable = {},},
+		  normalDrops = {"90000", "90001", "90002", "90008", "90003", "90007", "90004", "90005", "90006"}, rareDropTable = {},},
+		['Axes'] = {
+		--normalDrops = {"Dragon Axe", "Rune Axe", "Adamant Axe", "Mithril Axe", "Steel Axe", "Iron Axe", "Bronze Axe"}, rareDropTable = {},},
+		  normalDrops = {"90017", "90016", "90015", "90014", "90012", "90011", "90009"}, rareDropTable = {},},	
 	},
+
 	
 	Melee = {
-		thirdSubCatList = {"Partyhats"},
-		--['Partyhats'] = {"Blue Partyhat", "Green Partyhat", "Purple Partyhat", "Red Partyhat", "Yellow Partyhat", "Rainbow Partyhat", "White Partyhat", "Black Partyhat", "Silver Partyhat", "Gold Partyhat"},
-		  ['Partyhats'] = {"90979", "90980", "90981", "90983", "90986", "90982", "90985", "91060", "90984", "91061"},
-	
+		thirdSubCatList = {"Runes"},
+		['Runes'] = {
+		--normalDrops = {"Air Rune", "Mind Rune", "Water Rune", "Earth Rune", "Fire Rune", "Body Rune", "Cosmic Rune", "Chaos Rune", "Astral Rune", "Nature Rune", "Law Rune", "Death Rune", "Wrath Rune"}, rareDropTable = {},},
+		  normalDrops = {"90120", "90090", "90107", "90067", "90070", "90038", "90130", "90052", "90123", "90091", "90139", "90133", "90109"}, rareDropTable = {},},	
 	},
 	Range = {
-		thirdSubCatList = {"Christmas", "Halloween"},
-		--['Christmas'] = {"Blue Partyhat", "Green Partyhat", "Purple Partyhat", "Red Partyhat", "Yellow Partyhat", "Rainbow Partyhat", "White Partyhat", "Black Partyhat", "Silver Partyhat", "Gold Partyhat"},
-		  ['Christmas'] = {"90979", "90980", "90981", "90983", "90986", "90982", "90985", "91060", "90984", "91061"},
-		--['Halloween'] = {"Blue Partyhat", "Green Partyhat", "Purple Partyhat", "Red Partyhat", "Yellow Partyhat", "Rainbow Partyhat", "White Partyhat", "Black Partyhat", "Silver Partyhat", "Gold Partyhat"},
-		  ['Halloween'] = {"90979", "90980", "90981", "90983", "90986", "90982", "90985", "91060", "90984", "91061"},
-	
+		thirdSubCatList = {"Trees", "Axes"},
+		['Trees'] = {
+		--normalDrops = {"Logs", "Oak Logs", "Willow Logs", "Teak Logs", "Maple Logs", "Mahogany Logs", "Yew Logs", "Magic Logs", "Redwood Logs"}, rareDropTable = {},},
+		  normalDrops = {"90000", "90001", "90002", "90008", "90003", "90007", "90004", "90005", "90006"}, rareDropTable = {},},
+		['Axes'] = {
+		--normalDrops = {"Dragon Axe", "Rune Axe", "Adamant Axe", "Mithril Axe", "Steel Axe", "Iron Axe", "Bronze Axe"}, rareDropTable = {},},
+		  normalDrops = {"90017", "90016", "90015", "90014", "90012", "90011", "90009"}, rareDropTable = {},},	
 	},
 	Magic = {
-		thirdSubCatList = {"Christmas", "Halloween"},
-		--['Christmas'] = {"Blue Partyhat", "Green Partyhat", "Purple Partyhat", "Red Partyhat", "Yellow Partyhat", "Rainbow Partyhat", "White Partyhat", "Black Partyhat", "Silver Partyhat", "Gold Partyhat"},
-		  ['Christmas'] = {"90979", "90980", "90981", "90983", "90986", "90982", "90985", "91060", "90984", "91061"},
-		--['Halloween'] = {"Blue Partyhat", "Green Partyhat", "Purple Partyhat", "Red Partyhat", "Yellow Partyhat", "Rainbow Partyhat", "White Partyhat", "Black Partyhat", "Silver Partyhat", "Gold Partyhat"},
-		  ['Halloween'] = {"90979", "90980", "90981", "90983", "90986", "90982", "90985", "91060", "90984", "91061"},
-	
+		thirdSubCatList = {"Runes"},
+		['Runes'] = {
+		--normalDrops = {"Air Rune", "Mind Rune", "Water Rune", "Earth Rune", "Fire Rune", "Body Rune", "Cosmic Rune", "Chaos Rune", "Astral Rune", "Nature Rune", "Law Rune", "Death Rune", "Wrath Rune"}, rareDropTable = {},},
+		  normalDrops = {"90120", "90090", "90107", "90067", "90070", "90038", "90130", "90052", "90123", "90091", "90139", "90133", "90109"}, rareDropTable = {},},	
 	},
 }
 
