@@ -3,33 +3,74 @@ WORS_Loot_Weapons_Data = {
 	subcategoryOneText = "Select SubCat",
 	subcategoryTwo = true,
 	subcategoryTwoText = "Select SubSubcat",
-	subTwoCat = {"Melee", "Range", "Magic", "Meme"},  -- Add 3rd dropdown list here  here	
+	subTwoCat = {"Melee_Weapons", "Range_Weapons", "Magic_Weapons", "Meme_Weapons"},  -- Add 3rd dropdown list here  here	
 	
-	Melee = {
-		thirdSubCatList = {"Potions"},
-		['Potions'] = {
-		--normalDrops = {"Attack Potion", "Cavern Potion", "Relicym's Balm", "Strength Potion", "Serum 207", "Potion", "Compost Potion", "Restore Potion", "Energy Potion", "Defence Potion", "Agility Potion", "Combat Potion", "Prayer Potion", "Crafting Potion", "Super Attack Potion", "Fishing Potion", "Superantipoison Potion", "Super Energy Potion", "Hunter Potion", "Strength Mix Potion", "Magic Essence Potion", "Super Strength Potion", "Super Restore Potion", "Super Defence Potion", "Antidote+", "Antifire Potion", "Ranging Potion", "Magic Potion", "Stamina Potion", "Extended Antifire Potion", "Antidote++", "Zamorak Brew", "Saradomin Brew", "Bastion Potion", "Battlemage Potion", "Extended Super Antifire Potion"}, rareDropTable = {},},
-		  normalDrops = {"90567", "90588", "90589", "90630", "90573", "90560", "90572", "2455", "90592", "90583", "90595", "90594", "90562", "90564", "90587", "90584", "90575", "90563", "90601", "90150", "90569", "90570", "90576"}, rareDropTable = {},},
+	Melee_Weapons = {
+		thirdSubCatList = {"Dragon", "Rune", "Adamant", "Mithril", "Black", "Iron", "Bronze"},
+		['Dragon'] = {
+		--normalDrops = {"Dragon Scimitar", "Dragon Longsword", "Dragon Dagger", "Dragon Dagger(p+)", "Dragon Battleaxe", "Dragon Mace"}, rareDropTable = {},},
+		  normalDrops = {"52305", "50509", "59472", "53098", "50514"}, rareDropTable = {},},
+		['Bronze'] = {
+		--normalDrops = {"Bronze Scimitar", "Bronze 2h Sword", "Bronze Battle Axe", "Bronze Warhammer", "Bronze Longsword", "Bronze Sword", "Bronze Med Helm", "Bronze Mace", "Bronze Axe", "Bronze Dagger"}, rareDropTable = {},},
+		  normalDrops = {"90033", "90175", "90170", "90236", "90165", "90043", "90163", "90009", "90162"}, rareDropTable = {},},
+		['Black'] = {
+		--normalDrops = {"Blurite Scimitar", "Blurite 2h Sword", "Blurite Battle Axe", "Blurite Warhammer", "Blurite Longsword", "Blurite Sword", "Blurite Med Helm", "Blurite Mace", "Blurite Axe", "Blurite Dagger"}, rareDropTable = {},},
+		  normalDrops = {}, rareDropTable = {},},
+		['Iron'] = {
+		--normalDrops = {"Iron Scimitar", "Iron 2h Sword", "Iron Battle Axe", "Iron Warhammer", "Iron Longsword", "Iron Sword", "Iron Med Helm", "Iron Mace", "Iron Axe", "Iron Dagger"}, rareDropTable = {},},
+		  normalDrops = {"90186", "90200", "90192", "90188", "90184", "90182", "90181", "90011", "90086"}, rareDropTable = {},},
+		['Steel'] = {
+		--normalDrops = {"Steel Scimitar", "Steel 2h Sword", "Steel Battle Axe", "Steel Warhammer", "Steel Longsword", "Steel Sword", "Steel Med Helm", "Steel Mace", "Steel Axe", "Steel Dagger"}, rareDropTable = {},},
+		  normalDrops = {"90272", "90286", "90278", "90274", "90271", "90269", "90268", "90012", "90267"}, rareDropTable = {},},
+		['Mithril'] = {
+		--normalDrops = {"Mithril Scimitar", "Mithril 2h Sword", "Mithril Battle Axe", "Mithril Warhammer", "Mithril Longsword", "Mithril Sword", "Mithril Med Helm", "Mithril Mace", "Mithril Axe", "Mithril Dagger"}, rareDropTable = {},},
+		  normalDrops = {"90304", "90318", "90310", "90306", "90303", "90301", "90300", "90014", "90299"}, rareDropTable = {},},
+		['Adamant'] = {
+		--normalDrops = {"Adamant Scimitar", "Adamant 2h Sword", "Adamant Battle Axe", "Adamant Warhammer", "Adamant Longsword", "Adamant Sword", "Adamant Med Helm", "Adamant Mace", "Adamant Axe", "Adamant Dagger"}, rareDropTable = {},},
+		  normalDrops = {"90335", "90349", "90341", "90337", "90334", "90332", "90331", "90015", "90330"}, rareDropTable = {},},
+		['Rune'] = {
+		--normalDrops = {"Rune Scimitar", "Rune 2h Sword", "Rune Battle Axe", "Rune Warhammer", "Rune Longsword", "Rune Sword", "Rune Med Helm", "Rune Mace", "Rune Axe", "Rune Dagger"}, rareDropTable = {},},
+		  normalDrops = {"90366", "90380", "90372", "90368", "90365", "90363", "90362", "90016", "90361"}, rareDropTable = {},},	
+	
 	},	
 	
 	
 	
-	Range = {
-		thirdSubCatList = {"Runes"},
+	Range_Weapons = {
+		thirdSubCatList = {"Bows", "Ammo"},
+		['Bows'] = {
+		--normalDrops = {"Magic Shortbow", "Magic Longbow", "Yew Shortbow", "Yew Longbow", "Maple Shortbow", "Maple Longbow", "Willow Shortbow", "Willow Longbow", "Oak Shortbow", "Oak Longbow", "Shortbow", "Longbow"}, rareDropTable = {},},
+		  normalDrops = {"90658", "90659", "90656", "90657", "90654", "90655", "90652", "90653", "90650", "90651", "90648", "90649"}, rareDropTable = {},},
+		['Ammo'] = {
+		--normalDrops = {"Rune Arrows", "Adamant Arrows", "Mithril Arrows", "Steel Arrows", "Iron Arrows", "Blurite Arrows", "Bronze Arrows"}, rareDropTable = {},},
+		  normalDrops = {"90390", "90359", "90328", "90296", "90257", "90633"}, rareDropTable = {},},		
+		--['Crossbows'] = {
+		--['Cannon'] = {
+		--['Darts'] = {
+
+	},
+	
+	Magic_Weapons = {
+		thirdSubCatList = {"God Staffs", "Elemental staffs", "Battlestaffs", "Mystic Staffs", "Runes"},
+		['God Staffs'] = {
+		--normalDrops = {"Guthix staff", "Guthix cape", "Saradomin staff", "Saradomin cape", "Zamorak staff", "Zamorak cape"}, rareDropTable = {},},
+		  normalDrops = {"50955", "60441", "50954", "50951", "50956", "50953"}, rareDropTable = {},},
+		['Elemental staffs'] = {
+		--normalDrops = {"Staff of Air", "Staff of water", "Staff of earth", "staff of fire"}, rareDropTable = {},},
+		  normalDrops = {"90838", "90837", "90839", "90836"}, rareDropTable = {},},
+		['Battlestaffs'] = {
+		--normalDrops = {"Air Battlestaff", "Water Battlestaff", "Earth Battlestaff", "Fire Battlestaff", "Dust Battlestaff", "Lava Battlestaff", "Mist Battlestaff", "Mud Battlestaff", "Smoke Battlestaff", "Steam Battlestaff"}, rareDropTable = {},},
+		  normalDrops = {"90404", "90533", "90433", "90439"}, rareDropTable = {},},
+		['Mystic Staffs'] = {
+		--normalDrops = {"Mystic Staffs  staff", "Mystic Staffs  staff", "Mystic Staffs  staff", "Mystic Staffs  staff", "Mystic Staffs  staff", "Mystic Staffs  staff", "Mystic Staffs  staff", "Mystic Staffs  staff", "Mystic Staffs  staff", "Mystic Staffs  staff"}, rareDropTable = {},},
+		  normalDrops = {}, rareDropTable = {},},		
 		['Runes'] = {
 		--normalDrops = {"Air Rune", "Mind Rune", "Water Rune", "Earth Rune", "Fire Rune", "Body Rune", "Cosmic Rune", "Chaos Rune", "Astral Rune", "Nature Rune", "Law Rune", "Death Rune", "Wrath Rune"}, rareDropTable = {},},
 		  normalDrops = {"90120", "90090", "90107", "90067", "90070", "90038", "90130", "90052", "90123", "90091", "90139", "90133", "90109"}, rareDropTable = {},},	
 	},
 	
-	Magic = {
-		thirdSubCatList = {"Runes"},
-		['Runes'] = {
-		--normalDrops = {"Air Rune", "Mind Rune", "Water Rune", "Earth Rune", "Fire Rune", "Body Rune", "Cosmic Rune", "Chaos Rune", "Astral Rune", "Nature Rune", "Law Rune", "Death Rune", "Wrath Rune"}, rareDropTable = {},},
-		  normalDrops = {"90120", "90090", "90107", "90067", "90070", "90038", "90130", "90052", "90123", "90091", "90139", "90133", "90109"}, rareDropTable = {},},	
-	},
 	
-	
-	Meme = {
+	Meme_Weapons = {
 		thirdSubCatList = {"Trees", "Axes"},
 		['Trees'] = {
 		--normalDrops = {"Logs", "Oak Logs", "Willow Logs", "Teak Logs", "Maple Logs", "Mahogany Logs", "Yew Logs", "Magic Logs", "Redwood Logs"}, rareDropTable = {},},

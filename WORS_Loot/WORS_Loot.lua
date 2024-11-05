@@ -280,8 +280,8 @@ local function ClearLootContent()
     -- Check if lootItems is nil or empty
     if not lootItems or #lootItems == 0 then
         print("No loot items to clear.")
-        subInfoText:SetText("")  -- Clear any existing text
-        subInfoText:Show()  -- Show the info text if needed
+        subInfoText:SetText("Choose Next Dropdown")  -- Clear any existing text
+        --subInfoText:Show()  -- Show the info text if needed
         return
     else
         print("Loot items before clearing: ", #lootItems)
@@ -300,9 +300,17 @@ local function ClearLootContent()
     end
 
     subInfoText:SetText("")  -- Clear the error message or info text
-    subInfoText:Hide()  -- Optionally hide the text if there's no message to show
+    subInfoText:Show()  -- Optionally hide the text if there's no message to show
     wipe(lootItems)  -- Clear the lootItems table
     print("Loot content cleared. Total items now:", #lootItems)
+    if not subCat or not subSubCat then
+        -- Display default message and example buttons
+        subInfoText:SetText("Choose Next Dropdown")  -- Clear any existing text
+        --subInfoText:Show()  -- Show the info text if needed
+		--DisplayDefaultInfo()
+        return
+    end
+
 end
 
 
@@ -318,7 +326,7 @@ local function UpdateLootTable(subCat, subSubCat)
     -- Check if no valid selection was made
     if not subCat or not subSubCat then
         -- Display default message and example buttons
-        --DisplayDefaultInfo()
+        DisplayDefaultInfo()
         return
     end
     local lootEntries = {}
@@ -326,7 +334,9 @@ local function UpdateLootTable(subCat, subSubCat)
     -- Create a mapping of all loot datasets
     local lootDataSources = {WORS_Loot_Boss_Data, WORS_Loot_RDT_Data, WORS_Loot_Weapons_Data, WORS_Loot_Armour_Data, WORS_Loot_Slayer_Data, WORS_Loot_Skill_Data, WORS_Loot_Meme_Data}
     if subCat and subSubCat then
-        local foundData = false
+        subInfoText:SetText("")  -- Clear the error message or info text
+		--subInfoText:Show()  -- Optionally hide the text if there's no message to show
+		local foundData = false
         for _, dataSource in ipairs(lootDataSources) do
             if dataSource[subCat] then
                 local categoryData = dataSource[subCat][subSubCat]
@@ -357,8 +367,9 @@ local function UpdateLootTable(subCat, subSubCat)
         end
     else
         print("No loot entries available for the selected category.")
-		subInfoText:SetText("No loot in this catogry maybe bug or maybe itemID is\n unknown check OSRS Wiki before reporting")
-    end
+		subInfoText:SetText("No loot in this catogry maybe bug or maybe itemID is\n unknown or not in WORS yet check OSRS Wiki before reporting")
+		
+	end
 end
 
 
@@ -413,7 +424,7 @@ local function UpdateSubcategoryDropdown(selectedModule)
     UIDropDownMenu_ClearAll(subcategoryDropdown)
     UIDropDownMenu_ClearAll(thirdDropdown)
     UIDropDownMenu_SetText(thirdDropdown, "")    
-    ClearLootContent() 
+	ClearLootContent() 
     -- Add new modules here if needed
     local modules = {RareDropTable = WORS_Loot_RDT_Data, Weapons = WORS_Loot_Weapons_Data, Armour = WORS_Loot_Armour_Data, Slayer = WORS_Loot_Slayer_Data, Skills = WORS_Loot_Skill_Data, Memes = WORS_Loot_Meme_Data, Bosses = WORS_Loot_Boss_Data,}
 

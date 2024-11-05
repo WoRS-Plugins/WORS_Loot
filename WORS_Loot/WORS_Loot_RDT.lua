@@ -3,32 +3,30 @@ WORS_Loot_RDT_Data = {
 	subcategoryOneText = "Select Subcat",
 	subcategoryTwo = true,
 	subcategoryTwoText = "Select SubSubcat",
-	subTwoCat = {"RareDropTable", "GemDropTable", "MegaRareDropTable"},  -- Add 3rd dropdown list here  here	
+	subTwoCat = {"RareDropTable"},  -- Add 3rd dropdown list here  here	
 
 	RareDropTable = {
-		thirdSubCatList = {"Potions"},
-		['Potions'] = {
-		--normalDrops = {"Attack Potion", "Cavern Potion", "Relicym's Balm", "Strength Potion", "Serum 207", "Potion", "Compost Potion", "Restore Potion", "Energy Potion", "Defence Potion", "Agility Potion", "Combat Potion", "Prayer Potion", "Crafting Potion", "Super Attack Potion", "Fishing Potion", "Superantipoison Potion", "Super Energy Potion", "Hunter Potion", "Strength Mix Potion", "Magic Essence Potion", "Super Strength Potion", "Super Restore Potion", "Super Defence Potion", "Antidote+", "Antifire Potion", "Ranging Potion", "Magic Potion", "Stamina Potion", "Extended Antifire Potion", "Antidote++", "Zamorak Brew", "Saradomin Brew", "Bastion Potion", "Battlemage Potion", "Extended Super Antifire Potion"}, rareDropTable = {},},
-		  normalDrops = {"90567", "90588", "90589", "90630", "90573", "90560", "90572", "2455", "90592", "90583", "90595", "90594", "90562", "90564", "90587", "90584", "90575", "90563", "90601", "90150", "90569", "90570", "90576"}, rareDropTable = {},},
+		thirdSubCatList = {"Rare Drop Table", "Gem Drop Table", "Mega-Rare Drop Table"},
+		['Rare Drop Table'] = {
+		--normalDrops = {},
+		  normalDrops = {},
+		--rareDropTable = {"Loop half of key", "tooth half of key", "Uncut sapphire", "Runite Bar", "Nature Rune", "Rune 2h sword", "Rune Battleaxe", "Uncut Emerald", "Law rune", "Death Rune", "Steel Arrows", "Rune Arrows", "Adamant javelin", "Rune sq Shield", "Dragonstone", "Silver ore", "uncut ruby", "rune kiteshield", "Dragon Med Helm", "Rune Spear", "Shield Left Half", "Chaos Talisman", "nature Talisman", "Dragon Spear", "uncut diamond", "Rune javelin"},
+		  rareDropTable = {"91122", "91121", "90527", "90158", "90091", "90380", "90360", "90521", "90139", "90133", "90296", "90390", "90371", "90428", "90029", "90526", "90374", "91119", "90381", "91125", "90242", "90247", "91124", "90519"},
+		},	
+		['Gem Drop Table'] = {
+		--normalDrops = {},
+		  normalDrops = {},
+		--rareDropTable = {"Uncut sapphire", "Uncut emerald", "Uncut ruby", "Chaos Talisman", "Nature talisman", "uncut diamond", "rune javelin", "Loop half of key", "tooth half of key", "Rune Spear", "Shield Left Half", "Dragon spear"},
+		  rareDropTable = {"90527", "90521", "90526", "90242", "90247", "90519", "91122", "91121", "90381", "91125", "91124"},
+		},	
+		['Mega-Rare Drop Table'] = {
+		--normalDrops = {},
+		  normalDrops = {},
+		--rareDropTable = {"Rune Spear", "Shield Left Half", "Dragon spear"},
+		  rareDropTable = {"90381", "91125", "91124"},
+		},	
 	},	
 	
-	GemDropTable = {
-		thirdSubCatList = {"Runes"},
-		['Runes'] = {
-		--normalDrops = {"Air Rune", "Mind Rune", "Water Rune", "Earth Rune", "Fire Rune", "Body Rune", "Cosmic Rune", "Chaos Rune", "Astral Rune", "Nature Rune", "Law Rune", "Death Rune", "Wrath Rune"}, rareDropTable = {},},
-		  normalDrops = {"90120", "90090", "90107", "90067", "90070", "90038", "90130", "90052", "90123", "90091", "90139", "90133", "90109"}, rareDropTable = {},},	
-	},
-	
-	MegaRareDropTable = {
-		thirdSubCatList = {"Trees", "Axes"},
-		['Trees'] = {
-		--normalDrops = {"Logs", "Oak Logs", "Willow Logs", "Teak Logs", "Maple Logs", "Mahogany Logs", "Yew Logs", "Magic Logs", "Redwood Logs"}, rareDropTable = {},},
-		  normalDrops = {"90000", "90001", "90002", "90008", "90003", "90007", "90004", "90005", "90006"}, rareDropTable = {},},
-		['Axes'] = {
-		--normalDrops = {"Dragon Axe", "Rune Axe", "Adamant Axe", "Mithril Axe", "Steel Axe", "Iron Axe", "Bronze Axe"}, rareDropTable = {},},
-		  normalDrops = {"90017", "90016", "90015", "90014", "90012", "90011", "90009"}, rareDropTable = {},},	
-	},
-
 }
 
 	
