@@ -7,6 +7,18 @@
 	--***local modulesData = {WORS_Loot_Slayer_Data, WORS_Loot_Skill_Data, WORS_Loot_Meme_Data, WORS_Loot_Boss_Data}
 --UIDropDownMenu_Initialize(moduleDropdown, function(self, level)
 	--***local modules = {"Bosses", "Slayer", "Skills", "Memes"}
+WORS_LootData = WORS_LootData or {}  -- Ensure the saved variable table exists
+
+-- Set default values for debugMode 
+WORS_LootData.debugMode = WORS_LootData.debugMode or false -- debug prints
+WORS_LootData.transparency = WORS_LootData.transparency or 1.0 
+
+
+function debugPrint(message)
+    if WORS_LootData.debugMode then  -- Corrected the condition
+        print("Debug: " .. message)
+    end
+end
 
 
 local WORS_Loot = CreateFrame("Frame", "WORS_Loot", UIParent)
@@ -43,7 +55,7 @@ end)
 WORS_Loot:SetClampedToScreen(true)
 
 WORS_Loot:Hide()
-print("WORS Loot main frame created.")
+debugPrint("WORS Loot main frame created.")
 
 
 -- Title
@@ -55,17 +67,17 @@ title:SetText("WORS Loot")
 local moduleDropdown = CreateFrame("Frame", "WORS_Loot_ModuleDropdown", WORS_Loot, "UIDropDownMenuTemplate")
 moduleDropdown:SetPoint("TOPLEFT", WORS_Loot, "TOPLEFT", 20, -30)
 UIDropDownMenu_SetWidth(moduleDropdown, 130)
-print("Module dropdown created.")
+debugPrint("Module dropdown created.")
 
 local subcategoryDropdown = CreateFrame("Frame", "WORS_Loot_SubcategoryDropdown", WORS_Loot, "UIDropDownMenuTemplate")
 subcategoryDropdown:SetPoint("TOPLEFT", moduleDropdown, "TOPLEFT", 160, 0)
 UIDropDownMenu_SetWidth(subcategoryDropdown, 130)
-print("Subcategory dropdown created.")
+debugPrint("Subcategory dropdown created.")
 
 local thirdDropdown = CreateFrame("Frame", "WORS_Loot_ThirdDropdown", WORS_Loot, "UIDropDownMenuTemplate")
 thirdDropdown:SetPoint("TOPLEFT", subcategoryDropdown, "TOPLEFT", 160, 0)
 UIDropDownMenu_SetWidth(thirdDropdown, 130)
-print("Third dropdown created.")
+debugPrint("Third dropdown created.")
 
 
 -- Loot Table Frame
@@ -128,9 +140,9 @@ end
 
 -- Function to create a loot button
 local function CreateLootButton(itemId, index, isRareDrop)
-    print("Creating loot button for item ID:", itemId)
+    debugPrint("Creating loot button for item ID:", itemId)
     if not itemId then
-        print("Error: Missing item ID.")
+        debugPrint("Error: Missing item ID.")
         return nil
     end
 
@@ -180,7 +192,7 @@ local function CreateLootButton(itemId, index, isRareDrop)
             GameTooltip:SetHyperlink(itemLink)
             GameTooltip:Show()
         else
-            print("Error: Item link not found for item ID " .. itemId)
+            debugPrint("Error: Item link not found for item ID " .. itemId)
         end
     end)
 
@@ -275,34 +287,34 @@ DisplayDefaultInfo()
 -- Clear Loot Content
 -- Clear Loot Content
 local function ClearLootContent()
-    print("Clearing loot content...")
+    debugPrint("Clearing loot content...")
 
     -- Check if lootItems is nil or empty
     if not lootItems or #lootItems == 0 then
-        print("No loot items to clear.")
+        debugPrint("No loot items to clear.")
         subInfoText:SetText("Choose Next Dropdown")  -- Clear any existing text
         --subInfoText:Show()  -- Show the info text if needed
         return
     else
-        print("Loot items before clearing: ", #lootItems)
+        debugPrint("Loot items before clearing: ", #lootItems)
     end
 
     for _, button in ipairs(lootItems) do
         if button and button.Hide then
             button:Hide()  -- Hide the button
             button:ClearAllPoints()  -- Clear positioning
-            print("Hiding item button with ID:", button.itemID) -- Log the action
+            debugPrint("Hiding item button with ID:", button.itemID) -- Log the action
         elseif not button then
-            print("Button is nil")
+            debugPrint("Button is nil")
         else
-            print("Button does not have a Hide method")
+            debugPrint("Button does not have a Hide method")
         end
     end
 
     subInfoText:SetText("")  -- Clear the error message or info text
     subInfoText:Show()  -- Optionally hide the text if there's no message to show
     wipe(lootItems)  -- Clear the lootItems table
-    print("Loot content cleared. Total items now:", #lootItems)
+    debugPrint("Loot content cleared. Total items now:", #lootItems)
     if not subCat or not subSubCat then
         -- Display default message and example buttons
         subInfoText:SetText("Choose Next Dropdown")  -- Clear any existing text
@@ -321,7 +333,7 @@ end
 -- *****HERE TO ADD NEW MODULE*****
 -- ********************************
 local function UpdateLootTable(subCat, subSubCat)
-    print("Updating loot table for SubCat:", subCat, "SubSubCat:", subSubCat)
+    debugPrint("Updating loot table for SubCat:", subCat, "SubSubCat:", subSubCat)
     ClearLootContent()
     -- Check if no valid selection was made
     if not subCat or not subSubCat then
@@ -352,21 +364,21 @@ local function UpdateLootTable(subCat, subSubCat)
             end
         end
         if not foundData then
-            print("Error: No data found for subCat:", subCat, "subSubCat:", subSubCat)
+            debugPrint("Error: No data found for subCat:", subCat, "subSubCat:", subSubCat)
         end
     else
-        print("Error: Missing subCat or subSubCat.")
+        debugPrint("Error: Missing subCat or subSubCat.")
         return
     end
 
     if #lootEntries > 0 then
         for index, lootItem in ipairs(lootEntries) do
-            print("Loot entry:", lootItem.itemID, "Rare:", lootItem.rareDrop)
+            debugPrint("Loot entry:", lootItem.itemID, "Rare:", lootItem.rareDrop)
             local lootButton = CreateLootButton(lootItem.itemID, index, lootItem.rareDrop)  -- Create the button
             table.insert(lootItems, lootButton)  -- Store the button reference instead of the lootItem
         end
     else
-        print("No loot entries available for the selected category.")
+        debugPrint("No loot entries available for the selected category.")
 		subInfoText:SetText("No loot in this catogry maybe bug or maybe itemID is\n unknown or not in WORS yet check OSRS Wiki before reporting")
 		
 	end
@@ -380,7 +392,7 @@ end
 -- Update Subcategory for Skills / ModularTemplate
 local function UpdateThirdSubCategory(selectedMod, selectedCat)
 	ClearLootContent()
-    print("UpdateSubCategory: Updating thirdDropdown for selected subSubCat:", selectedCat)
+    debugPrint("UpdateSubCategory: Updating thirdDropdown for selected subSubCat:", selectedCat)
     UIDropDownMenu_ClearAll(thirdDropdown)
     UIDropDownMenu_SetText(thirdDropdown, selectedMod.subcategoryTwoText)
 
@@ -390,13 +402,13 @@ local function UpdateThirdSubCategory(selectedMod, selectedCat)
         thirdDropdownValues = selectedMod[selectedCat].thirdSubCatList
     end
 
-    print("Retrieved third dropdown values for category:", selectedCat)
+    debugPrint("Retrieved third dropdown values for category:", selectedCat)
     if thirdDropdownValues then
         for _, value in ipairs(thirdDropdownValues) do
-            print(" - " .. value)
+            debugPrint(" - " .. value)
         end
     else
-        print("No third dropdown values found for category:", selectedCat)
+        debugPrint("No third dropdown values found for category:", selectedCat)
         return  -- Exit early if no values found
     end
     -- Initialize the dropdown menu
@@ -419,7 +431,7 @@ end
 -- *****HERE TO ADD NEW MODULE*****
 -- ********************************
 local function UpdateSubcategoryDropdown(selectedModule)
-    print("Updating subcategory dropdown for module:", selectedModule)
+    debugPrint("Updating subcategory dropdown for module:", selectedModule)
     -- Clear dropdowns and loot content
     UIDropDownMenu_ClearAll(subcategoryDropdown)
     UIDropDownMenu_ClearAll(thirdDropdown)
@@ -434,7 +446,7 @@ local function UpdateSubcategoryDropdown(selectedModule)
         UIDropDownMenu_SetText(subcategoryDropdown, moduleData.subcategoryOneText)
         -- Retrieve subTwoCat from the module data file
         local subTwoCat = moduleData.subTwoCat or {}
-        print("subTwoCat: ", subTwoCat)  -- Check if this is populated correctly        
+        debugPrint("subTwoCat: ", subTwoCat)  -- Check if this is populated correctly        
         -- Initialize the subcategory dropdown
         UIDropDownMenu_Initialize(subcategoryDropdown, function(self, level)
             for _, cat in ipairs(subTwoCat) do
@@ -449,7 +461,7 @@ local function UpdateSubcategoryDropdown(selectedModule)
         end)
         thirdDropdown:Show()
     else
-        print("Selected module not found in modules table:", selectedModule)
+        debugPrint("Selected module not found in modules table:", selectedModule)
     end
 end
 
@@ -472,6 +484,27 @@ UIDropDownMenu_Initialize(moduleDropdown, function(self, level)
     end
 end)
 
+
+function toggleTransparency()
+    -- Toggle transparency between 50% (0.5) and 100% (1.0)
+    if WORS_LootData.transparency == 1.0 then
+        WORS_LootData.transparency = 0.5
+        print("WORS Loot: Transparency set to 50%.")
+    else
+        WORS_LootData.transparency = 1.0
+        print("WORS Loot: Transparency set to 100%.")
+    end
+    WORS_Loot:SetAlpha(WORS_LootData.transparency)
+end
+
+function toggleDebugMode()
+    WORS_LootData.debugMode = not WORS_LootData.debugMode  -- Toggle the boolean value
+    if WORS_LootData.debugMode then
+        print("Debug mode is now ON.")
+    else
+        print("Debug mode is now OFF.")
+    end
+end
 -- Toggle Command for Frame Visibility
 SLASH_WORS_LOOT1 = "/worsloot"
 SlashCmdList["WORS_LOOT"] = function()
@@ -481,6 +514,12 @@ SlashCmdList["WORS_LOOT"] = function()
         WORS_Loot:Show()
     end
 end
+
+-- Define the slash command for debugging
+SLASH_LOOT_DEBUG1 = "/lootdebug"
+SlashCmdList["LOOT_DEBUG"] = toggleDebugMode
+
+
 
 -- Minimap Icon for WORS_Loot using LibDBIcon and Ace3
 local addon = LibStub("AceAddon-3.0"):NewAddon("WORS_Loot")
@@ -498,9 +537,10 @@ local miniButton = LibStub("LibDataBroker-1.1"):NewDataObject("WORS_Loot", {
             end
         elseif btn == "RightButton" then
 			if WORS_Loot:IsShown() then
-                WORS_Loot:Hide()
+                toggleTransparency()
             else
                 WORS_Loot:Show()
+				toggleTransparency()
             end
         end
 	end,
@@ -509,7 +549,7 @@ local miniButton = LibStub("LibDataBroker-1.1"):NewDataObject("WORS_Loot", {
 			return
 		end
 		tooltip:AddLine("WORS Loot\n\nLeft-click: Toggle WORS Loot Window", nil, nil, nil, nil)
-		tooltip:AddLine("Right-click: N/A Placeholder", nil, nil, nil, nil)
+		tooltip:AddLine("Right-click: Toggle Transparency 50% or 100%", nil, nil, nil, nil)
 	end,
 })
 function addon:OnInitialize()

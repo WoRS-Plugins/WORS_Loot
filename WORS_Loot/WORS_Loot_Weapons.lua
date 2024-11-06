@@ -6,7 +6,11 @@ WORS_Loot_Weapons_Data = {
 	subTwoCat = {"Melee_Weapons", "Range_Weapons", "Magic_Weapons", "Meme_Weapons"},  -- Add 3rd dropdown list here  here	
 	
 	Melee_Weapons = {
-		thirdSubCatList = {"Dragon", "Rune", "Adamant", "Mithril", "Black", "Iron", "Bronze"},
+		thirdSubCatList = {"Melee_Spec", "Dragon", "Rune", "Adamant", "Mithril", "Black", "Iron", "Bronze"},
+['Melee_Spec'] = {
+--normalDrops = {"Abyssal Whip", "Granite Maul", "Dragon Dagger", "Dragon Dagger(p+)", "Dragon Longsword", "Dragon Scimitar", "Dragon Sword", "Dragon Battleaxe", "Dragon Mace"}, rareDropTable = {},},
+  normalDrops = {"52011", "52012", "59472", "53098", "50509", "52305", "65516", "50514"}, rareDropTable = {},},		
+		
 		['Dragon'] = {
 		--normalDrops = {"Dragon Scimitar", "Dragon Longsword", "Dragon Dagger", "Dragon Dagger(p+)", "Dragon Battleaxe", "Dragon Mace"}, rareDropTable = {},},
 		  normalDrops = {"52305", "50509", "59472", "53098", "50514"}, rareDropTable = {},},
