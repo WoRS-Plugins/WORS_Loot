@@ -136,7 +136,17 @@ local function CreateLootFrame()
     lootFrame:Show()  -- Show the loot frame
     return lootFrame
 end
+-- Used to cache items before creating loot buttons
+local function ShowItemTooltipById(itemId, parentFrame)
+    -- Create an item link based on the itemId
+    local itemLink = format("|cffffffff|Hitem:%d:0:0:0:0:0:0:0|h[%d]|h|r", itemId, itemId)
 
+    -- Show the tooltip
+    GameTooltip:SetOwner(parentFrame, "ANCHOR_RIGHT")  -- Set the owner of the tooltip (parentFrame could be a button or frame)
+    GameTooltip:SetHyperlink(itemLink)  -- Set the item link for the tooltip
+    GameTooltip:Show()  -- Display the tooltip
+    GameTooltip:Hide()
+end
 
 -- Function to create a loot button
 local function CreateLootButton(itemId, index, isRareDrop)
@@ -145,6 +155,8 @@ local function CreateLootButton(itemId, index, isRareDrop)
         debugPrint("Error: Missing item ID.")
         return nil
     end
+
+    ShowItemTooltipById(itemId,WORS_Loot)
 
     local lootButton = CreateFrame("Button", nil, lootContent)
     lootButton:SetSize(210, buttonHeight)
@@ -164,8 +176,7 @@ local function CreateLootButton(itemId, index, isRareDrop)
             edgeSize = 32,
             insets = { left = 5, right = 6, top = 6, bottom = 5 }
         })
-        lootButton:SetBackdropColor(0.75, 0.25, 0.75, 1)  -- Lighter purple background for rare drops
-
+        lootButton:SetBackdropColor(0.647, 0, 1, 1)  -- Purple background for rare drops
     else
         lootButton:SetBackdrop({
             bgFile = "Interface\\WORS\\OldSchoolBackground2",
@@ -206,26 +217,33 @@ local function CreateLootButton(itemId, index, isRareDrop)
     itemName:SetFont("Fonts\\runescape.ttf", 20)  -- Set custom font and size
     itemName:SetTextColor(0, 0, 1)
 
-    -- Attempt to fetch the item name using the cached method
-    local itemInfo = {GetItemInfo(itemId)}
-    if itemInfo[1] then
-        itemName:SetTextColor(1, 1, 0)
-        itemName:SetText(itemInfo[1])  -- Use the name if found
+    -- Try to fetch the item info using GetItemInfo
+    local itemNameText, _, _, _, _, _, _, _, itemIcon = GetItemInfo(itemId)
+
+    -- Check if we successfully fetched the item info
+    if itemNameText then
+        itemName:SetText(itemNameText)  -- Set item name if found
+        itemName:SetTextColor(1, 1, 0)  -- Yellow color if found
+        itemIcon = itemIcon or "Interface/Icons/INV_Misc_QuestionMark"  -- Use the icon if available
     else
+        -- If the item info is still not available, display the item ID in orange
         local itemLink = format("|cffff8000|Hitem:%d:0:0:0:0:0:0:0|h[%d]|h|r", itemId, itemId)
         itemName:SetText(itemLink)  -- Display the raw hyperlink format
-        itemName:SetTextColor(1, 1, 0)  -- Yellow color for unknown items
+        itemName:SetTextColor(1, 0.647, 0)  -- Orange color for unknown items
 
+        -- Start an OnUpdate function to check if the item info becomes available
         local loadingStartTime = GetTime()
         lootButton:SetScript("OnUpdate", function(self)
-            if (GetTime() - loadingStartTime) > 999 then
-                lootButton:SetScript("OnUpdate", nil)  -- Stop the update script
+            -- Limit the update duration to avoid infinite loop
+            if (GetTime() - loadingStartTime) > 120 then
+                lootButton:SetScript("OnUpdate", nil)  -- Stop the update script after 5 seconds
             else
-                itemInfo = {GetItemInfo(itemId)}
-                if itemInfo[1] then
-                    itemName:SetText(itemInfo[1])  -- Update the name if it has now been found
-                    itemName:SetTextColor(1, 1, 0)  -- Reset color to white
-                    lootButton:SetScript("OnUpdate", nil)  -- Stop the update script
+                -- Try to fetch the item info again
+                local updatedItemNameText = GetItemInfo(itemId)
+                if updatedItemNameText then
+                    itemName:SetText(updatedItemNameText)  -- Update the name once it's found
+                    itemName:SetTextColor(1, 1, 0)  -- Reset color to yellow when found
+                    lootButton:SetScript("OnUpdate", nil)  -- Stop the update script once done
                 end
             end
         end)
@@ -236,24 +254,34 @@ local function CreateLootButton(itemId, index, isRareDrop)
 
     lootButton:SetScript("OnClick", function(self, button)
         local itemLink = GetItemLink(itemId)
-        if itemLink then
-            if ChatFrame1.editBox:IsVisible() then
-                local currentChatText = ChatFrame1.editBox:GetText()
-                ChatFrame1.editBox:SetText(currentChatText .. " " .. itemLink)
-                ChatFrame1.editBox:SetCursorPosition(#currentChatText + #itemLink + 1)
-                ChatFrame1.editBox:SetFocus()
+        local fallbackItemLink = format("|cffff8000|Hitem:%d:0:0:0:0:0:0:0|h[%d]|h|r", itemId, itemId)
+        local finalItemLink = itemLink or fallbackItemLink
+
+        if button == "LeftButton" then
+            if IsShiftKeyDown() then
+                -- Shift + Left Click: Link item in chat preserving typed message
+                if ChatFrame1.editBox:IsVisible() then
+                    -- Chat is already open, append the link
+                    local currentChatText = ChatFrame1.editBox:GetText()
+                    ChatFrame1.editBox:SetText(currentChatText .. " " .. finalItemLink)
+                    ChatFrame1.editBox:SetCursorPosition(#currentChatText + #finalItemLink + 1)
+                    ChatFrame1.editBox:SetFocus()
+                else
+                    -- Open chat and insert the item link
+                    ChatFrame_OpenChat(finalItemLink, ChatFrame1)
+                end
+            elseif IsControlKeyDown() then
+                -- Ctrl + Left Click: Open item in dressing room
+                DressUpItemLink(finalItemLink)
             else
+                -- Regular Left Click: Show ItemRefTooltip
                 ItemRefTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                ItemRefTooltip:SetHyperlink(itemLink)
+                ItemRefTooltip:SetHyperlink(finalItemLink)
                 ItemRefTooltip:Show()
             end
-        else
-            local fallbackItemLink = format("|cffff8000|Hitem:%d:0:0:0:0:0:0:0|h[%d]|h|r", itemId, itemId)
-            ItemRefTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            ItemRefTooltip:SetHyperlink(fallbackItemLink)
-            ItemRefTooltip:Show()
         end
     end)
+
 
     lootButton:Show()
     return lootButton
@@ -262,15 +290,13 @@ end
 local function DisplayDefaultInfo()
     -- Create a text frame to display information about the add-on
     --local infoText = LootFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    infoText:SetText("Welcome to the WORS Loot!\n\nSelect a category to view item tables for Bosses, \nSlayer Tasks, Crafting and More.\n\n Items with Black background are from the regular drop table\nItems with a Purple background are from random drop table\n\nDrop tables have been mostly scraped from OSRS wiki \nmistakes likly here")
+	infoText:SetText("Welcome to the WORS Loot!\n\nSelect a category to view item tables for Bosses, \nSlayer Tasks, Crafting and More.\n\nItems in orange text like this |cffff8000[42069]|r will update if you click them\n\nItems with Black background are from the regular drop table\nItems with a |cffa500ffPurple|r background are from random drop table\n\nDrop tables have been mostly scraped from OSRS wiki \nmistakes likely here")
 	--subInfoText:SetText("")
     -- Example button for normal drops
     local normalDropButton = CreateLootButton(90066, 1, false)  -- Replace 12345 with an example item ID
     normalDropButton:SetPoint("TOP", infoText, "BOTTOM", 0, -20)
-
-
-    -- Example button for rare drops
-    local rareDropButton = CreateLootButton(91119	, 2, true)  -- Replace 67890 with an example rare item ID
+        -- Example button for rare drops
+    local rareDropButton = CreateLootButton(91119, 2, true)  -- Replace 67890 with an example rare item ID
     rareDropButton:SetPoint("TOP", normalDropButton, "BOTTOM", 0, -10)
 
     --Ensure all elements are visible
@@ -484,6 +510,20 @@ UIDropDownMenu_Initialize(moduleDropdown, function(self, level)
     end
 end)
 
+function loadLootTransparency()
+    -- Check if the transparency value exists in WORS_LootData
+    if WORS_LootData.transparency then
+        -- Apply the saved transparency value to the WORS_Loot frame
+        print("WORS Loot: Transparency set to " .. (WORS_LootData.transparency * 100) .. "%.")
+        WORS_Loot:SetAlpha(WORS_LootData.transparency)
+    else
+        -- Default behavior if no saved transparency value is found
+        WORS_LootData.transparency = 1.0  -- Default to 100% transparency
+        print("WORS Loot: Transparency set to 100%.")
+        WORS_Loot:SetAlpha(1.0)
+    end
+end
+
 
 function toggleTransparency()
     -- Toggle transparency between 50% (0.5) and 100% (1.0)
@@ -497,14 +537,7 @@ function toggleTransparency()
     WORS_Loot:SetAlpha(WORS_LootData.transparency)
 end
 
-function toggleDebugMode()
-    WORS_LootData.debugMode = not WORS_LootData.debugMode  -- Toggle the boolean value
-    if WORS_LootData.debugMode then
-        print("Debug mode is now ON.")
-    else
-        print("Debug mode is now OFF.")
-    end
-end
+
 -- Toggle Command for Frame Visibility
 SLASH_WORS_LOOT1 = "/worsloot"
 SlashCmdList["WORS_LOOT"] = function()
@@ -517,7 +550,15 @@ end
 
 -- Define the slash command for debugging
 SLASH_LOOT_DEBUG1 = "/lootdebug"
-SlashCmdList["LOOT_DEBUG"] = toggleDebugMode
+--SlashCmdList["LOOT_DEBUG"] = toggleDebugMode
+SlashCmdList["LOOT_DEBUG"] = function()
+    WORS_LootData.debugMode = not WORS_LootData.debugMode  -- Toggle the boolean value
+    if WORS_LootData.debugMode then
+        print("Debug mode is now ON.")
+    else
+        print("Debug mode is now OFF.")
+    end
+end
 
 
 
@@ -557,10 +598,12 @@ function addon:OnInitialize()
 		profile = {
 			minimap = {
 				hide = false,
+					minimapPos = 145, -- This is the hardcoded position (in degrees)
 			},
 		},
 	})
 	WORSLootMinimapButton:Register("WORS_Loot", miniButton, self.db.profile.minimap)
+	loadLootTransparency()
 end
 
 
