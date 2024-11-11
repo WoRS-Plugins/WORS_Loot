@@ -36,8 +36,8 @@ WORS_Loot_Meme_Data = {
 	Test ={
 		thirdSubCatList = {"GM Items"},
 		['GM Items'] = {
-		--normalDrops = {"Dooby's Glasses", "Fight Club"}, rareDropTable = {},
-		  normalDrops = {"770415", "7736"}, rareDropTable = {},
+		--normalDrops = {"Axe of a thousand Souls", "Dooby's Glasses", "Fight Club", "Precious's Ribbon"}, rareDropTable = {},
+		  normalDrops = {"69377", "770415", "7736", "52019"}, rareDropTable = {},
 		},
 	},
 }	

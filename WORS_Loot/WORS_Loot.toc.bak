@@ -1,0 +1,25 @@
+## Interface: 30300
+## Title: WORS_Loot
+## Notes: An addon for displaying loot tables in WORS.\n\n                             Open using minimap button or /worsloot.                                                                                                                                  Item tables are mostly scraped from OSRS wiki may not be accurate to actuall WORS drop tables.                                                              Send bugs or drop table changes to Untitled - Llama69420 on discord.
+## Author: Untitled - Discord@Llama69420
+## Version: 1.0
+
+## SavedVariables: WORS_LootData
+## DefaultState: disabled
+
+# Libraries
+libs/Ace3/AceAddon-3.0/AceAddon-3.0.lua
+libs/Ace3/AceDB-3.0/AceDB-3.0.lua
+libs/LibDBIcon-1.0/embeds.xml
+
+# Main 
+WORS_Loot.lua
+
+#Data Files
+WORS_Loot_Armour.lua
+WORS_Loot_Bosses.lua
+WORS_Loot_Memes.lua
+WORS_Loot_RDT.lua
+WORS_Loot_Skills.lua
+WORS_Loot_Slayer.lua
+WORS_Loot_Weapons.lua
