@@ -19,22 +19,18 @@ WORS_Loot_Armour_Data = {
 		['Axes'] = {
 		  normalDrops = {"65516", "65517", "65649"}, rareDropTable = {},},
 	},
+	
 	Melee_Armour = {
 		thirdSubCatList = {"Dragon", "Rune", "Adamant", "Mithril", "Black", "Iron", "Bronze"},
 		['Dragon'] = {
 		--normalDrops = {"Dragon med helm", "Dragon chainbody", "Dragon platelegs", "Dragon plateskirt", "Dragon Sq shield", "Dragon defender", "Dragon boots"}, rareDropTable = {},},
 		  normalDrops = {"91119", "51395", "51982", "52304", "50487", "57958", "57167"}, rareDropTable = {},},		
-		
 		['Bronze'] = {
 		--normalDrops = {"Bronze Full Helm", "Bronze Med Helm", "Bronze Platebody", "Bronze Chainbody", "Bronze Platelegs", "Bronze Plateskirt", "Bronze Kiteshield", "Bronze Sq Shield", "Bronze Boots"}, rareDropTable = {},},
 		  normalDrops = {"90168", "90043", "90178", "90172", "90176", "90177", "90173", "90046", "90235"}, rareDropTable = {},},
-		
-		
 		['Black'] = {
 		--normalDrops = {"Black Full Helm", "Black Med Helm", "Black Platebody", "Black Chainbody", "Black Platelegs", "Black Plateskirt", "Black Kiteshield", "Black Sq Shield", "Black Boots"}, rareDropTable = {},},
-		  normalDrops = {"50485", "50484", "50483", "50482", "50480", "50481", "50488", "50486", "51993"}, rareDropTable = {},},		
-		
-		
+		  normalDrops = {"50485", "50484", "50483", "50482", "50480", "50481", "50488", "50486", "51993"}, rareDropTable = {},},			
 		['Iron'] = {
 		--normalDrops = {"Iron Full Helm", "Iron Med Helm", "Iron Platebody", "Iron Chainbody", "Iron Platelegs", "Iron Plateskirt", "Iron Kiteshield", "Iron Sq Shield", "Iron Boots"}, rareDropTable = {},},
 		  normalDrops = {"90189", "90182", "90198", "90193", "90197", "90196", "90194", "90191", "90251"}, rareDropTable = {},},
@@ -51,6 +47,7 @@ WORS_Loot_Armour_Data = {
 		--normalDrops = {"Rune Full Helm", "Rune Med Helm", "Rune Platebody", "Rune Chainbody", "Rune Platelegs", "Rune Plateskirt", "Rune Kiteshield", "Rune Sq Shield", "Rune Boots"}, rareDropTable = {},},
 		  normalDrops = {"90369", "90363", "90378", "90373", "90377", "90376", "90374", "90371", "90384"}, rareDropTable = {},},	
 	},
+	
 	Range_Armour = {
 		thirdSubCatList = {"Black d'Hide", "Red d'Hide", "Green d'Hide", "Snakeskin", "Studded Leather", "Hard Leather", "Leather"},
 		["Black d'Hide"] = {
@@ -77,9 +74,8 @@ WORS_Loot_Armour_Data = {
 		['Leather'] = {
 		--normalDrops = {"Coif", "Leather Body", "Leather Chaps", "Leather Vambraces", "Leather Cowl"}, rareDropTable = {},},
 		  normalDrops = {"90421", "90460", "90461", "90464", "90462"}, rareDropTable = {},},	
-	
-	
 	},
+	
 	Magic_Armour = {
 		thirdSubCatList = {"God Staffs", "Mystic", "Splitbark", "Wizard Robes", "Wizard", "Runes"},
 		--Magic
