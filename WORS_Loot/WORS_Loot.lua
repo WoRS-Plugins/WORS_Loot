@@ -22,7 +22,7 @@ end
 
 
 local WORS_Loot = CreateFrame("Frame", "WORS_Loot", UIParent)
-WORS_Loot:SetSize(550, 450)
+WORS_Loot:SetSize(750, 450)
 WORS_Loot:SetPoint("CENTER")
 
 WORS_Loot:SetBackdrop({	
@@ -64,25 +64,69 @@ title:SetPoint("TOP", 0, -10)
 title:SetText("WORS Loot")
 
 -- Dropdowns
+local function SetDropdownTextStyle(dropdown)
+    -- Set the normal style for the selected item text
+    _G[dropdown:GetName().."Text"]:SetFont("Fonts\\runescape.ttf", 20, "NORMAL")  -- Set font size and style for selected item
+    _G[dropdown:GetName().."Text"]:SetJustifyH("RIGHT")  -- Keep text centered
+end
+
 local moduleDropdown = CreateFrame("Frame", "WORS_Loot_ModuleDropdown", WORS_Loot, "UIDropDownMenuTemplate")
 moduleDropdown:SetPoint("TOPLEFT", WORS_Loot, "TOPLEFT", 20, -30)
-UIDropDownMenu_SetWidth(moduleDropdown, 130)
+UIDropDownMenu_SetWidth(moduleDropdown, 200)
+
+-- Set default text to "Select Module" before an option is selected
+UIDropDownMenu_SetText(moduleDropdown, "Select Module")
+
+-- Hide the background of the dropdown menu
+_G[moduleDropdown:GetName().."Middle"]:Hide()  -- Hides the background middle section
+_G[moduleDropdown:GetName().."Left"]:Hide()    -- Hides the left part of the background
+_G[moduleDropdown:GetName().."Right"]:Hide()   -- Hides the right part of the background
+
+-- Apply text styling
+SetDropdownTextStyle(moduleDropdown)
+
 debugPrint("Module dropdown created.")
 
 local subcategoryDropdown = CreateFrame("Frame", "WORS_Loot_SubcategoryDropdown", WORS_Loot, "UIDropDownMenuTemplate")
-subcategoryDropdown:SetPoint("TOPLEFT", moduleDropdown, "TOPLEFT", 160, 0)
-UIDropDownMenu_SetWidth(subcategoryDropdown, 130)
+subcategoryDropdown:SetPoint("TOPLEFT", moduleDropdown, "TOPLEFT", 230, 0)
+UIDropDownMenu_SetWidth(subcategoryDropdown, 200)
+
+-- Set default text to "Select Subcategory" before an option is selected
+UIDropDownMenu_SetText(subcategoryDropdown, "")
+
+-- Hide the background of the dropdown menu
+_G[subcategoryDropdown:GetName().."Middle"]:Hide()  -- Hides the background middle section
+_G[subcategoryDropdown:GetName().."Left"]:Hide()    -- Hides the left part of the background
+_G[subcategoryDropdown:GetName().."Right"]:Hide()   -- Hides the right part of the background
+
+-- Apply text styling
+SetDropdownTextStyle(subcategoryDropdown)
+
 debugPrint("Subcategory dropdown created.")
 
 local thirdDropdown = CreateFrame("Frame", "WORS_Loot_ThirdDropdown", WORS_Loot, "UIDropDownMenuTemplate")
-thirdDropdown:SetPoint("TOPLEFT", subcategoryDropdown, "TOPLEFT", 160, 0)
-UIDropDownMenu_SetWidth(thirdDropdown, 130)
+thirdDropdown:SetPoint("TOPLEFT", subcategoryDropdown, "TOPLEFT", 230, 0)
+UIDropDownMenu_SetWidth(thirdDropdown, 200)
+
+-- Set default text to "Select Option" before an option is selected
+UIDropDownMenu_SetText(thirdDropdown, "")
+
+-- Hide the background of the dropdown menu
+_G[thirdDropdown:GetName().."Middle"]:Hide()  -- Hides the background middle section
+_G[thirdDropdown:GetName().."Left"]:Hide()    -- Hides the left part of the background
+_G[thirdDropdown:GetName().."Right"]:Hide()   -- Hides the right part of the background
+
+-- Apply text styling
+SetDropdownTextStyle(thirdDropdown)
+
 debugPrint("Third dropdown created.")
+
+
 
 
 -- Loot Table Frame
 local lootTableFrame = CreateFrame("ScrollFrame", "WORS_Loot_LootTable", WORS_Loot, "UIPanelScrollFrameTemplate")
-lootTableFrame:SetSize(450, 350)
+lootTableFrame:SetSize(650, 350)
 lootTableFrame:SetPoint("TOPLEFT", moduleDropdown, "BOTTOMLEFT", 20, -20)
 lootTableFrame:SetBackdrop({
     bgFile = "Interface/Tooltips/UI-Tooltip-Background",
@@ -114,10 +158,21 @@ subInfoText:SetText("")  -- Initial text
 subInfoText:SetTextColor(1, 1, 1)  -- White text color
 subInfoText:SetJustifyH("CENTER")  -- Center the text horizontally
 
+local scrollBar = _G["WORS_Loot_LootTableScrollBar"] -- Default scrollbar name from "UIPanelScrollFrameTemplate"
+local scrollUpButton = _G["WORS_Loot_LootTableScrollBarScrollUpButton"]
+local scrollDownButton = _G["WORS_Loot_LootTableScrollBarScrollDownButton"]
+scrollBar:GetThumbTexture():SetAlpha(0) 
+scrollUpButton:GetNormalTexture():SetAlpha(0)
+scrollUpButton:GetPushedTexture():SetAlpha(0)
+scrollUpButton:GetDisabledTexture():SetAlpha(0)
+scrollDownButton:GetNormalTexture():SetAlpha(0)
+scrollDownButton:GetPushedTexture():SetAlpha(0)
+scrollDownButton:GetDisabledTexture():SetAlpha(0)
+
 -- Function to create the loot frame
 local function CreateLootFrame()
     local lootFrame = CreateFrame("Frame", "WORS_Loot", UIParent)
-    lootFrame:SetSize(400, 300)  -- Set the desired size
+    lootFrame:SetSize(610, 300)  -- Set the desired size
     lootFrame:SetPoint("CENTER")  -- Position it in the center of the screen
 
     -- Set the backdrop for the loot frame
@@ -159,12 +214,12 @@ local function CreateLootButton(itemId, index, isRareDrop)
     ShowItemTooltipById(itemId,WORS_Loot)
 
     local lootButton = CreateFrame("Button", nil, lootContent)
-    lootButton:SetSize(210, buttonHeight)
+    lootButton:SetSize(300, buttonHeight)
 
     -- Calculate row and column based on the index
     local column = (index - 1) % 2  -- 0 for first column, 1 for second column
     local row = math.floor((index - 1) / 2)  -- Calculate the row number
-    lootButton:SetPoint("TOPLEFT", lootContent, "TOPLEFT", 10 + column * (220 + 10), -(row * (buttonHeight + buttonSpacing)))
+    lootButton:SetPoint("TOPLEFT", lootContent, "TOPLEFT", 10 + column * (330 + 10), -(row * (buttonHeight + buttonSpacing)))
 
     -- Set the button background color based on the rarity
     if isRareDrop then
