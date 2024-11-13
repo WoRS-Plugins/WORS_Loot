@@ -71,8 +71,8 @@ local function SetDropdownTextStyle(dropdown)
 end
 
 local moduleDropdown = CreateFrame("Frame", "WORS_Loot_ModuleDropdown", WORS_Loot, "UIDropDownMenuTemplate")
-moduleDropdown:SetPoint("TOPLEFT", WORS_Loot, "TOPLEFT", 20, -30)
-UIDropDownMenu_SetWidth(moduleDropdown, 200)
+moduleDropdown:SetPoint("TOPLEFT", WORS_Loot, "TOPLEFT", 50, -30)
+UIDropDownMenu_SetWidth(moduleDropdown, 150)
 
 -- Set default text to "Select Module" before an option is selected
 UIDropDownMenu_SetText(moduleDropdown, "Select Module")
@@ -88,8 +88,8 @@ SetDropdownTextStyle(moduleDropdown)
 debugPrint("Module dropdown created.")
 
 local subcategoryDropdown = CreateFrame("Frame", "WORS_Loot_SubcategoryDropdown", WORS_Loot, "UIDropDownMenuTemplate")
-subcategoryDropdown:SetPoint("TOPLEFT", moduleDropdown, "TOPLEFT", 230, 0)
-UIDropDownMenu_SetWidth(subcategoryDropdown, 200)
+subcategoryDropdown:SetPoint("TOPLEFT", moduleDropdown, "TOPLEFT", 210, 0)
+UIDropDownMenu_SetWidth(subcategoryDropdown, 150)
 
 -- Set default text to "Select Subcategory" before an option is selected
 UIDropDownMenu_SetText(subcategoryDropdown, "")
@@ -105,8 +105,8 @@ SetDropdownTextStyle(subcategoryDropdown)
 debugPrint("Subcategory dropdown created.")
 
 local thirdDropdown = CreateFrame("Frame", "WORS_Loot_ThirdDropdown", WORS_Loot, "UIDropDownMenuTemplate")
-thirdDropdown:SetPoint("TOPLEFT", subcategoryDropdown, "TOPLEFT", 230, 0)
-UIDropDownMenu_SetWidth(thirdDropdown, 200)
+thirdDropdown:SetPoint("TOPLEFT", subcategoryDropdown, "TOPLEFT", 210, 0)
+UIDropDownMenu_SetWidth(thirdDropdown, 150)
 
 -- Set default text to "Select Option" before an option is selected
 UIDropDownMenu_SetText(thirdDropdown, "")
