@@ -144,16 +144,15 @@ local buttonHeight = 40
 local buttonSpacing = 5
 
 -- Create clickable item link with icon using item ID
-local buttonHeight = 40
-local buttonSpacing = 5
+
 -- Create a font string for displaying information
 local infoText = lootTableFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-infoText:SetPoint("TOP", lootTableFrame, "TOP", 0, -60)  -- Adjust position as necessary
+infoText:SetPoint("TOP", lootTableFrame, "TOP", -10, -60)  -- Adjust position as necessary
 infoText:SetText("")  -- Initial text
 infoText:SetTextColor(1, 1, 1)  -- White text color
 infoText:SetJustifyH("CENTER")  -- Center the text horizontally
 local subInfoText = lootTableFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-subInfoText:SetPoint("TOP", lootTableFrame, "TOP", 0, -60)  -- Adjust position as necessary
+subInfoText:SetPoint("TOP", lootTableFrame, "TOP", -10, -60)  -- Adjust position as necessary
 subInfoText:SetText("")  -- Initial text
 subInfoText:SetTextColor(1, 1, 1)  -- White text color
 subInfoText:SetJustifyH("CENTER")  -- Center the text horizontally
@@ -203,6 +202,12 @@ local function ShowItemTooltipById(itemId, parentFrame)
     GameTooltip:Hide()
 end
 
+-- Constants for button layout
+local BUTTON_WIDTH = 300
+local BUTTON_HEIGHT = 40
+local PADDING = 0  -- Distance from edges and between buttons
+local BUTTON_SPACING = 10  -- Space between buttons in a row or column
+
 -- Function to create a loot button
 local function CreateLootButton(itemId, index, isRareDrop)
     debugPrint("Creating loot button for item ID:", itemId)
@@ -211,40 +216,34 @@ local function CreateLootButton(itemId, index, isRareDrop)
         return nil
     end
 
-    ShowItemTooltipById(itemId,WORS_Loot)
+    ShowItemTooltipById(itemId, WORS_Loot)
 
     local lootButton = CreateFrame("Button", nil, lootContent)
-    lootButton:SetSize(300, buttonHeight)
+    lootButton:SetSize(BUTTON_WIDTH, BUTTON_HEIGHT)
 
-    -- Calculate row and column based on the index
-    local column = (index - 1) % 2  -- 0 for first column, 1 for second column
-    local row = math.floor((index - 1) / 2)  -- Calculate the row number
-    lootButton:SetPoint("TOPLEFT", lootContent, "TOPLEFT", 10 + column * (330 + 10), -(row * (buttonHeight + buttonSpacing)))
+    -- Calculate column and row positions
+    local column = (index - 1) % 2
+    local row = math.floor((index - 1) / 2)
 
+    -- Calculate x and y offsets based on row and column
+    local xOffset = PADDING + column * (BUTTON_WIDTH + BUTTON_SPACING)
+    local yOffset = -PADDING - row * (BUTTON_HEIGHT + BUTTON_SPACING)
+
+    lootButton:SetPoint("TOPLEFT", lootContent, "TOPLEFT", xOffset, yOffset)
+
+    -- Set the button background color based on rarity
     -- Set the button background color based on the rarity
-    if isRareDrop then
-        lootButton:SetBackdrop({
-            bgFile = "Interface\\WORS\\OldSchoolBackground2",  -- Use the same background texture
-            edgeFile = "Interface\\WORS\\OldSchool-Dialog-Border",
-            tile = false,
-            tileSize = 32,
-            edgeSize = 32,
-            insets = { left = 5, right = 6, top = 6, bottom = 5 }
-        })
-        lootButton:SetBackdropColor(0.647, 0, 1, 1)  -- Purple background for rare drops
-    else
-        lootButton:SetBackdrop({
-            bgFile = "Interface\\WORS\\OldSchoolBackground2",
-            edgeFile = "Interface\\WORS\\OldSchool-Dialog-Border",
-            tile = false,
-            tileSize = 32,
-            edgeSize = 32,
-            insets = { left = 5, right = 6, top = 6, bottom = 5 }
-        })
-        lootButton:SetBackdropColor(0, 0, 0, 1)  -- Black background for normal drops
-    end
-
-    -- Create item icon
+    lootButton:SetBackdrop({
+        bgFile = "Interface\\WORS\\OldSchoolBackground2",
+        edgeFile = "Interface\\WORS\\OldSchool-Dialog-Border",
+        tile = false,
+        tileSize = 32,
+        edgeSize = 32,
+        insets = { left = 5, right = 5, top = 5, bottom = 5 }
+    })
+    lootButton:SetBackdropColor(isRareDrop and 0.647 or 0, 0, isRareDrop and 1 or 0, 1)  -- Purple for rare, black otherwise
+    
+	-- Create item icon
     local itemIcon = lootButton:CreateTexture(nil, "ARTWORK")
     itemIcon:SetSize(40, 40)
     itemIcon:SetPoint("LEFT", lootButton, "LEFT", 5, 0)
